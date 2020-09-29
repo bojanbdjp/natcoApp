@@ -17,7 +17,14 @@
       "**/*"
     ],
     "ios": {
+      "bundleIdentifier": "com.bdjp.natcoApp",
+      "buildNumber": "1.0.0",
       "supportsTablet": true
+    },
+    "android": {
+      "package": "com.bdjp.natcoApp",
+      "versionCode": 1,
+      "googleServicesFile": "google-services.json"
     },
     "web": {
       "favicon": "./assets/favicon.png"

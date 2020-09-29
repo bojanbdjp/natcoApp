@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "531307150416",
+    "firebase_url": "https://natcoapp.firebaseio.com",
+    "project_id": "natcoapp",
+    "storage_bucket": "natcoapp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:531307150416:android:105b38187007f641546555",
+        "android_client_info": {
+          "package_name": "com.bdjp.natcoApp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "531307150416-oll0jbaguelsgoe4nhtfsfsdr3st0ftd.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCq9b5BVADdtzGWfkkDmy3Ymo3znsF1gI8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "531307150416-oll0jbaguelsgoe4nhtfsfsdr3st0ftd.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
