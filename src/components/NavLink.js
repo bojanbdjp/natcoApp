@@ -9,7 +9,6 @@ const NavLink = ({text, stackName, pageName}) => {
     return (
         <Spacer>
             <TouchableOpacity onPress={() => {
-                console.log("Klik na navigate");
                 navigation.navigate(stackName, {screen: pageName})}
             }>
                 <Text style={styles.link}>

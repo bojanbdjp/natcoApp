@@ -42,9 +42,10 @@ const tryLocalSignin = dispatch => async () => {
         } catch (err) {
             console.log("Ovo je greska ", err);
         }
-
+        console.log("Ispred prve navigacije");
         navigate('Home', {screen: 'Home'}); 
     } else {
+        console.log("Ispred druge navigacije");
         navigate('Auth');
     }
 }
@@ -76,18 +77,20 @@ const signin = (dispatch) => async ({email, password, track, lc}) => {
         await AsyncStorage.setItem('token', response.data.token);
         await AsyncStorage.setItem('email', response.data.email);
         dispatch({type: 'signin', payload: response.data})
-
-        navigate('Home', {screen: 'Home'});
+        console.log("idemo na sign in");
+        navigate('Home', {screen: 'Home'})
     } catch (err) {
         dispatch({type: 'add_error', payload: err.response.data.message})
     }
-    }
+}
 
 const signout = dispatch => async () => {
     await AsyncStorage.removeItem('token');
     await AsyncStorage.removeItem('email');
+    navigate('Auth');
     dispatch({type: 'signout'})
-        navigate('Auth');
+    
+
 }
 
 
