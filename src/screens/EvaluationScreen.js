@@ -16,8 +16,11 @@ const EvaluationScreen = () => {
     const [day, setDay] = useState();
     const [track, setTrack] = useState();
     const { setTitle } = useContext(HomeTitleContext);
-    const { filterSessions, state } = useContext(SessionContext);
-    
+    const { filterSessions, rateSession, enableButton, state } = useContext(SessionContext);
+
+    const [sessionObject, setSessionObject] = useState("");
+   
+
     useFocusEffect(() => {
         setTitle('Evaluacije');
     });
@@ -26,15 +29,19 @@ const EvaluationScreen = () => {
         console.log("Sessions" , state.sessions);
     }, [state.sessions]);
 
-    const openModal = () => {
+    const openModal = (ses) => {
+        console.log("ovo je ses ", ses);
+        setSessionObject(ses);
         setModalVisible(!modalVisible);
     }
+
 
       let sessions = null
 
       if(state.sessions != null) {
         sessions = state.sessions.map(ses => <SessionRow session={ses}
-                                                        key={ses.name} openModal={() => openModal()}/>)
+                                                        key={ses.name} 
+                                                        openModal={() => openModal(ses)}/>)
       }
 
       if(state.loading) {
@@ -44,8 +51,13 @@ const EvaluationScreen = () => {
     return <ScrollView style={styles.scrollcontainer}>
 
     <EvaluationModal 
+        session={sessionObject}
         modalVisible={modalVisible}
-        closeModal={() => setModalVisible(!modalVisible)}/>
+        closeModal={() => setModalVisible(!modalVisible)}
+        saveRate={rateSession}
+        buttonDisabled={state.rateAnswer}
+        loading={state.loading}
+        enableButton={enableButton}/>
 
     <View style={styles.container}>
         

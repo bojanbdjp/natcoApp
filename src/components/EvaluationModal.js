@@ -1,19 +1,35 @@
 import React, {useEffect, useContext, useState} from 'react';
-import {View, StyleSheet, Text, Image, Modal, TouchableOpacity} from 'react-native';
-
+import {View, StyleSheet, Text, Image, Modal, TouchableOpacity, ActivityIndicator} from 'react-native';
+import { AntDesign } from '@expo/vector-icons';
 import { useFocusEffect } from '@react-navigation/native';
-import {Picker} from '@react-native-community/picker'
-import RNPickerSelect from 'react-native-picker-select';
+import { Input, Button } from "react-native-elements";
 
 import { HomeTitleContext } from '../context/HeaderContext'
+import CustomPicker from '../components/UI/Picker'
 
-const EvaluationModal = ({modalVisible,  closeModal, }) => {
-    const [day, setDay] = useState();
+const EvaluationModal = ({modalVisible,  closeModal, enableButton, session, saveRate, buttonDisabled, loading}) => {
+    const [rateSession, setRateSession] = useState();
+    const [rateFaci, setRateFaci] = useState();
+    const [comment, setComment] = useState();
     const { setTitle } = useContext(HomeTitleContext);
 
     useFocusEffect(() => {
         setTitle('Partneri');
     });
+
+    const closeModalLocal = () => {
+        enableButton();
+        closeModal();
+    }
+
+    let saveButton = <Button buttonStyle={styles.submit}
+                            title="Oceni sesn" disabled={buttonDisabled}
+                            onPress={() => saveRate({rateSession, rateFaci, comment, name: session.name})}
+                        />;
+
+    if(loading) {
+        saveButton = <ActivityIndicator size="large" color="#F15946" />  
+    }
 
     return <View style={styles.container}>
         
@@ -24,21 +40,52 @@ const EvaluationModal = ({modalVisible,  closeModal, }) => {
                 onRequestClose={() => {}}
             >
                 <View style={styles.modalContainer}>
-                    
-                <RNPickerSelect useNativeAndroidPickerStyle={true}
-                    onValueChange={setDay}
-                    placeholder={{
-                        label: 'Izaberite dan',
-                        value: null,
-                    }}   
-                    items={[
-                        { label: 'Dan 1', value: '1', key: 'dan1'},
-                        { label: 'Dan 2', value: '2', key: 'dan2'},
-                        { label: 'Dan 3', value: '3', key: 'dan3' },
-                        { label: 'Dan 4', value: '4', key: 'dan4' },
-                        { label: 'Dan 5', value: '5', key: 'dan5' },
-                ]}/> 
                 
+                <Text style={styles.sesName}>{session.name}</Text>
+                <Text style={styles.sesFaci}>{session.faci}</Text>
+
+                <Text style={styles.label}>Session:</Text>
+                <CustomPicker 
+                    onChange={setRateSession}
+                    label="Ocena"
+                    items={[
+                        { label: '1', value: '1', key: 'ocena1'},
+                        { label: '2', value: '2', key: 'ocena2'},
+                        { label: '3', value: '3', key: 'ocena3' },
+                        { label: '4', value: '4', key: 'ocena4' },
+                        { label: '5', value: '5', key: 'ocena5' },
+                ]}/> 
+
+                <Text style={styles.label}>Faci:</Text>
+                <CustomPicker 
+                    onChange={setRateFaci }
+                    label="Ocena"
+                    items={[
+                        { label: '1', value: '1', key: 'ocena1'},
+                        { label: '2', value: '2', key: 'ocena2'},
+                        { label: '3', value: '3', key: 'ocena3' },
+                        { label: '4', value: '4', key: 'ocena4' },
+                        { label: '5', value: '5', key: 'ocena5' },
+                ]}/> 
+
+                <Text style={styles.label}>Komentar:</Text>
+                <Input 
+                    multiline = {true}
+                    numberOfLines = {4}
+                    placeholder="" 
+                    value={comment}
+                    onChangeText={setComment}
+                    autoCapitalize="none"
+                    autoCorrect={false}
+                    inputStyle={styles.inputStype}
+                    inputContainerStyle={{borderBottomWidth:0, padding: 0}}
+                    placeholderTextColor='#E01A4F'
+                />
+                {saveButton}
+                {buttonDisabled ? <Text style={styles.success}>Uspešno si ocenio sešn</Text> : null}
+                <TouchableOpacity onPress={() => closeModalLocal()} style={styles.close}>
+                        <Text><AntDesign name="closecircleo" size={24} color="black" /></Text>
+                </TouchableOpacity>
                 </View>
             </Modal>
     </View>
@@ -75,7 +122,6 @@ const styles = StyleSheet.create({
         backgroundColor: "white",
         borderRadius: 20,
         padding: 25,
-        alignItems: "center",
         shadowColor: "#000",
         shadowOffset: {
             width: 0,
@@ -99,7 +145,44 @@ const styles = StyleSheet.create({
         borderRadius: 25,
         padding: 10,
         elevation: 2
-    }
+    },
+    sesName: {
+        fontSize: 18,
+        fontWeight: 'bold',
+        alignSelf: 'center'
+    },
+    sesFaci: {
+        fontSize: 12,
+        fontStyle: 'italic',
+        alignSelf: 'center',
+        marginTop: 5
+    },
+    label: {
+        marginTop: 20
+    },
+    inputStype:{
+        flex: 1,
+        borderWidth: 1,
+        borderColor: '#E01A4F',
+        borderRadius: 15,
+        backgroundColor: '#fff',
+        marginHorizontal: 0,
+        marginTop: 10,
+        paddingLeft: 10,
+        color: '#E01A4F',
+        height: 100
+
+      }, 
+      success: {
+        color: '#00af07',
+        fontWeight: 'bold',
+        marginLeft: 10,
+        marginTop: 10,
+        fontSize: 20,
+        marginLeft: '5%',
+        alignSelf: 'center',
+
+      }
 })
 
    
