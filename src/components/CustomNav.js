@@ -4,9 +4,10 @@ import { FontAwesome5 } from '@expo/vector-icons';
 
 import HomeScreen from '../screens/HomeScreen'
 import MusicScreen from '../screens/MusicScreen'
-import EvaluationScreen from '../screens/EvaluationScreen'
+import EvaluationScreen from '../screens/evaluations/EvaluationScreen'
 import PartnersScreen from '../screens/PartnersScreen'
 import UserScreen from '../screens/UserScreen'
+import SugarCubeScreen from '../screens/SugarCubeScreen'
 import {Context as AuthContext} from '../context/AuthContext'
 
 
@@ -22,6 +23,7 @@ const CustomNav = ({adminStack}) => {
             <Drawer.Screen name="Evaluacije" component={EvaluationScreen} />
             <Drawer.Screen name="Partners" component={PartnersScreen} options={{drawerLabel: 'Partneri'}}/>
             <Drawer.Screen name="User" component={UserScreen} options={{ drawerLabel: 'Nalog' }}/>
+            <Drawer.Screen name="Sugar Cubes" component={SugarCubeScreen} options={{ drawerLabel: 'Sugar'}}/>
             {state.track === '4' 
             ?  <Drawer.Screen name="Admin" component={adminStack} 
                 options={{

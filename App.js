@@ -8,6 +8,7 @@ import { HomeTitleContext } from './src/context/HeaderContext';
 import { navigationRef, isReadyRef } from './RootNavigation';
 import AdminHomeScreen from './src/screens/admin/AdminHomeScreen'
 import AdminEvaluationScreen from './src/screens/admin/AdminEvaluationScreen'
+import EvaAdmin from './src/screens/evaluations/EvaluationScreenAdmin'
 import AdminLCPage from './src/screens/admin/AdminLCPage'
 import ResolveAuthScreen from './src/screens/ResolveAuthScreen'
 import SigninScreen from './src/screens/SigninScreen'
@@ -47,7 +48,7 @@ function AdminStack() {
             tabBarLabel: 'Home',
             tabBarIcon: () => <Feather name="home" size={24} color="black" />,
           }}/>
-        <AdminFlow.Screen name="Evaluacije" component={AdminEvaluationScreen} 
+        <AdminFlow.Screen name="Evaluacije" component={EvaAdmin} 
           options={{
             tabBarLabel: 'Evaluacije',
             tabBarIcon: () => <FontAwesome name="wpforms" size={24} color="black" />,
@@ -84,7 +85,7 @@ export default function App() {
                 <ContextProvider>
                     <Main.Navigator>
                         <Main.Screen name="AuthResolver" component={ResolveAuthScreen}  
-                          options={{headerShown: false}}
+                          options={{headerShown: false,  gestureEnabled: false }}
                         />
 
                         <Main.Screen name="Home" component={MenuStackSecond} 
@@ -99,7 +100,8 @@ export default function App() {
 
                         <Main.Screen name="Auth" component={AuthStack} 
                           options={{
-                            headerShown: false, 
+                            headerShown: false,
+                            gestureEnabled: false 
 
                           }}/>
                     </Main.Navigator>
