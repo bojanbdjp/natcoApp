@@ -17,17 +17,17 @@ const CustomNav = ({adminStack}) => {
     
 
     return (
-        <Drawer.Navigator initialRouteName="Home">
+        <Drawer.Navigator initialRouteName="Home" overlayColor="#F15946" >
             <Drawer.Screen name="Home" component={HomeScreen} options={{ drawerLabel: 'Početna' }}/>
             <Drawer.Screen name="Music" component={MusicScreen} options={{ drawerLabel: 'Muzika' }}/>
             <Drawer.Screen name="Evaluacije" component={EvaluationScreen} />
             <Drawer.Screen name="Partners" component={PartnersScreen} options={{drawerLabel: 'Partneri'}}/>
             <Drawer.Screen name="User" component={UserScreen} options={{ drawerLabel: 'Nalog' }}/>
-            <Drawer.Screen name="Sugar Cubes" component={SugarCubeScreen} options={{ drawerLabel: 'Sugar'}}/>
+            <Drawer.Screen name="Sugar Cubes" component={SugarCubeScreen} options={{ drawerLabel: 'Sugar cubes'}}/>
             {state.track === '4' 
             ?  <Drawer.Screen name="Admin" component={adminStack} 
                 options={{
-                    drawerIcon: () => <FontAwesome5 name="user-cog" size={24} color="black" />
+                    drawerIcon: () => <FontAwesome5 name="user-cog" size={24} color="#F15946" />
                 }}/>
             : null}
       </Drawer.Navigator>

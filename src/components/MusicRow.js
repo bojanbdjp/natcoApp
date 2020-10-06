@@ -154,7 +154,7 @@ class HeartContainer extends React.Component {
     render() {
         return (
             <Animated.View style={[styles.heartContainer, this.getHeartStyle(), this.props.style]}>
-               <Heart color="purple"/>
+               <Heart color="#0056d8"/>
             </Animated.View>
         )
     }

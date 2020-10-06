@@ -21,7 +21,6 @@ const PartnersScreen = ({navigation}) => {
 
 
     setPropers = (image, text, textSecond, partnerStyle) => {
-        console.log("ovo su setProps ",image, text, partner);
         setImage(image);
         setText(text);
         setTextSecond(textSecond);

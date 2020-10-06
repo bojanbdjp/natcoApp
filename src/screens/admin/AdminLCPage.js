@@ -8,6 +8,7 @@ import apiurl from '../../api/server'
 import ChooseTrack from '../../components/ChooseTrack';
 import { HomeTitleContext } from '../../context/HeaderContext'
 import server, {URL} from '../../api/server'
+import AuthForm from '../../components/ChooseTrack';
 
 const AdminLCPage = () => {
     const [singi, setSingi] = useState();
@@ -52,7 +53,6 @@ const AdminLCPage = () => {
         try {
             let result = await server.post(`${URL}/updateApplications`, 
             {singi: +singi, ef: +ef, fon: +fon, met: +met, nis: +nis, kg: +kg, ns: +ns, sub: +sub})
-            console.log("ovo je ruzultat nakon update: ", result.data.applications);
     
         } catch (err){
             console.log("ovo je greska ", err);
@@ -159,33 +159,34 @@ const styles = StyleSheet.create({
     heading: {
         fontSize: 17,
         paddingLeft: 15,
-        marginBottom: 10
     },
-    messageView: {
 
-    },
     lcView:{
+        display: 'flex',
         flexDirection: 'row',
+        alignContent: 'center',
     },
 
     inputStype:{
-        flex: 0.4,
+        flex: 0.3,
         borderWidth: 1,
-        borderColor: '#E01A4F',
-        borderRadius: 15,
+        borderColor: '#0056d8',
+        borderRadius: 5,
         backgroundColor: '#fff',
         marginHorizontal: 0,
-        paddingLeft: 10,
-        color: '#E01A4F',
+        color: '#0056d8',
+        alignSelf: 'flex-end',
+        textAlign: 'center',
 
       }, 
       inputContainerStyle: {
         borderBottomWidth:0, 
         maxWidth: '60%',
+        justifyContent: 'flex-end',
         
       },
       submit: {
-        backgroundColor:'#E01A4F',
+        backgroundColor:'#0056d8',
         borderRadius: 15,
         marginHorizontal: 5,
         marginVertical: 10
@@ -206,7 +207,7 @@ const styles = StyleSheet.create({
         alignSelf: 'center'
       },
       text: {
-          fontSize: 24,
+          fontSize: 20,
           width: 100,
           marginRight: 30
       }

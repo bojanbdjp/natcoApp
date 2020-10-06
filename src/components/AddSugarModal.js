@@ -5,7 +5,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import { Input, Button } from "react-native-elements";
 
 
-const AddSugarModal = ({modalVisible,  closeModal, enableButton, userObj, addNewSugarCube, buttonDisabled, loading}) => {
+const AddSugarModal = ({modalVisible,  closeModal, user, addNewSugarCube, enableButton, loading, buttonDisabled}) => {
     const [comment, setComment] = useState();
 
 
@@ -15,14 +15,18 @@ const AddSugarModal = ({modalVisible,  closeModal, enableButton, userObj, addNew
     }
 
 
-
-    let saveButton = <Button buttonStyle={styles.submit}
-                            title="Pošalji" disabled={buttonDisabled}
-                            onPress={() => addNewSugarCube({message: comment, userEmail: userObj.email})}
-                        />;
+    let saveButton = <TouchableOpacity style={styles.submit} disabled={buttonDisabled}
+                            onPress={() => addNewSugarCube({message: comment, userEmail: user.email})}>
+                            <Text style={styles.submitText}>Pošalji</Text>
+                        </TouchableOpacity>;
 
     if(loading) {
         saveButton = <ActivityIndicator size="large" color="#F15946" />  
+    }
+
+    let userEmail;
+    if(user) {
+        userEmail = user.email
     }
 
     return <View style={styles.container}>
@@ -35,7 +39,7 @@ const AddSugarModal = ({modalVisible,  closeModal, enableButton, userObj, addNew
                 >
                 <View style={styles.modalContainer}>
                 
-                <Text style={styles.sesName}>{userObj}</Text>
+                <Text style={styles.sesName}>{userEmail}</Text>
 
                 <Text style={styles.label}>Komentar:</Text>
                 <Input 
@@ -48,10 +52,10 @@ const AddSugarModal = ({modalVisible,  closeModal, enableButton, userObj, addNew
                     autoCorrect={false}
                     inputStyle={styles.inputStype}
                     inputContainerStyle={{borderBottomWidth:0, padding: 0}}
-                    placeholderTextColor='#E01A4F'
+                    placeholderTextColor='#0056d8'
                 />
                 {saveButton}
-                {buttonDisabled ? <Text style={styles.success}>Uspešno si ocenio sešn</Text> : null}
+                {buttonDisabled ? <Text style={styles.success}>Uspešno si poslao komentar</Text> : null }
                 <TouchableOpacity onPress={closeModalLocal} style={styles.close}>
                         <Text><AntDesign name="closecircleo" size={24} color="black" /></Text>
                 </TouchableOpacity>
@@ -70,21 +74,20 @@ const styles = StyleSheet.create({
         height: 200,
         
     }, 
-    partnerText: {
-        paddingVertical: 10,
-        paddingHorizontal: 20,
+    submit: {
+        backgroundColor:'#0056d8',
+        borderRadius: 15,
+        marginHorizontal: 5,
+        marginVertical: 10,
+        padding: 10,
+        display: 'flex',
+        alignItems: 'center',
+      }, 
+      submitText:{
         fontWeight: 'bold',
-        fontSize: 20,
-        alignSelf: 'center'
-    }, 
-    partnerView: {
-        marginTop: 10,
-        width: '90%',
-        textAlign: 'center',
-    },
-    descriptionView: {
-        marginTop: 20
-    },
+        fontSize: 17,
+        color: '#fff'
+      },
     modalContainer: {
         flex: 1,
         margin: 12,
@@ -132,13 +135,13 @@ const styles = StyleSheet.create({
     inputStype:{
         flex: 1,
         borderWidth: 1,
-        borderColor: '#E01A4F',
+        borderColor: '#0056d8',
         borderRadius: 15,
         backgroundColor: '#fff',
         marginHorizontal: 0,
         marginTop: 10,
         paddingLeft: 10,
-        color: '#E01A4F',
+        color: '#0056d8',
         height: 100
 
       }, 

@@ -6,6 +6,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import apiurl from '../../api/server'
 import ChooseTrack from '../../components/ChooseTrack';
 import { HomeTitleContext } from '../../context/HeaderContext'
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 
 const AdminHomeScreen = () => {
@@ -33,7 +34,6 @@ const AdminHomeScreen = () => {
         setError("");
         try {
             const response = await apiurl.post('/sendNotification', {message, track});
-            console.log("ovo je odogovor", JSON.stringify(response.data));
             setSuccessMessage(response.data);
         } catch (err) {
             console.log("Ovo je greska ", err);
@@ -58,16 +58,17 @@ const AdminHomeScreen = () => {
                     autoCorrect={false}
                     inputStyle={styles.inputStype}
                     inputContainerStyle={{borderBottomWidth:0}}
-                    placeholderTextColor='#E01A4F'
+                    placeholderTextColor='#0056d8'
                 />
                 <ChooseTrack isAllAvailable={true} chooseTrack={setTrack}/>
 
                 {error != "" ? <Text style={styles.error}>{error}</Text> : null }
 
-                <Button buttonStyle={styles.submit}
-                    title="Pošalji poruku"
-                    onPress={() => sendNotification()}
-                />
+                <TouchableOpacity style={styles.submit}
+                    onPress={() => sendNotification()}>
+                    <Text style={styles.submitText}>Pošalji poruku</Text>
+                </TouchableOpacity>
+
 
                 {successMessage != "" ?<Text style={styles.success}>{successMessage}</Text> : null }
             </View>
@@ -81,7 +82,6 @@ const styles = StyleSheet.create({
     container: {
         height: '100%',
         marginHorizontal: 10,
-        backgroundColor: '#fff',
         paddingTop: 20
     },
     heading: {
@@ -95,19 +95,27 @@ const styles = StyleSheet.create({
 
     inputStype:{
         borderWidth: 1,
-        borderColor: '#E01A4F',
+        borderColor: '#0056d8',
         borderRadius: 15,
         backgroundColor: '#fff',
         marginHorizontal: 0,
         paddingLeft: 10,
-        color: '#E01A4F'
+        color: '#0056d8'
       }, 
       submit: {
-        backgroundColor:'#E01A4F',
+        backgroundColor:'#0056d8',
         borderRadius: 15,
         marginHorizontal: 5,
-        marginVertical: 10
+        marginVertical: 10,
+        padding: 10,
+        display: 'flex',
+        alignItems: 'center',
       }, 
+      submitText:{
+        fontWeight: 'bold',
+        fontSize: 17,
+        color: '#fff'
+      },
       error: {
           color: 'red',
           fontWeight: 'bold',

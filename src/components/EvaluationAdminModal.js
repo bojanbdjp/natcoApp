@@ -30,7 +30,6 @@ const EvaluationAdminModal = ({modalVisible,  closeModal, enableButton, session,
     let ukupnaOcena = 0;
     let prosecnaOcena = 0;
     
-    console.log("ovo su delegati: ", session.delegates);
 
 
     if(session.delegates) {
@@ -42,22 +41,16 @@ const EvaluationAdminModal = ({modalVisible,  closeModal, enableButton, session,
         return 0;
     })
         
-        //console.log("sortirano: " , trySort);
 
         sessionsArray = session.delegates.map(del => <Text key={del._id}>{del.lc} - {del.mark.comment}</Text>)
 
         session.delegates.forEach(com => {
             brojDelegata++;
             ukupnaOcena = ukupnaOcena + +com.mark.session;
-            console.log("ovo je ukupna ocena: " , ukupnaOcena);
         });
     }
 
-
     prosecnaOcena = ukupnaOcena/brojDelegata
-    //console.log("ovo je ukupna i prosecna ocena: ",ukupnaOcena, prosecnaOcena);
-    
-
 
 
     return <View style={styles.container}>

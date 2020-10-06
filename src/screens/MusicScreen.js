@@ -39,9 +39,9 @@ const MusicScreen = () => {
                         autoCorrect={false}
                         inputStyle={styles.inputStype}
                         containerStyle={styles.inputContainer}
-                        placeholderTextColor='#fff'
+                        placeholderTextColor='#0056d8'
                     />
-                    <Ionicons style={styles.addIcon} name="ios-add-circle-outline" size={34} color="black" 
+                    <Ionicons style={styles.addIcon} name="ios-add-circle-outline" size={34} color="#0056d8" 
                         onPress={() => addNewSong({name: song})}/>
                 </View>
 
@@ -72,7 +72,9 @@ const styles = StyleSheet.create({
     },
     inputStype:{
         borderRadius: 5,
-        backgroundColor: '#53B3CB',
+        borderColor: '#0056d8',
+        borderWidth: 1,
+        backgroundColor: '#fff',
         marginHorizontal: 0,
         paddingLeft: 10,
         color: '#fff',

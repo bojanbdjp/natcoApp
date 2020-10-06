@@ -8,7 +8,7 @@ const BorderBottom = () => {
 const styles = StyleSheet.create({
     fakeBorder: {
         borderTopWidth: 1,
-        borderColor: '#ffcaca',
+        borderColor: 'rgba(0,86,216, 0.3)',
         height: 10,
         width: '90%',
         alignSelf: 'center',

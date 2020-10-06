@@ -24,7 +24,7 @@ const pickerSelectStyles = StyleSheet.create({
         paddingHorizontal: 10,
         paddingBottom: 12,
         borderWidth: 1,
-        borderColor: 'gray',
+        borderColor: '#0056d8',
         borderRadius: 4,
         backgroundColor: 'white',
         color: 'black',

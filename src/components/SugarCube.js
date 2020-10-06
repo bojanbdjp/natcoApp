@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {View, StyleSheet, TouchableOpacity, Image} from 'react-native';
 import {Badge, Text } from 'react-native-elements'
+import { Ionicons } from '@expo/vector-icons';
 
 import userImageHolder from '../../assets/aiesecer.png'
 const SugarCube = ({openModal, user, loggedEmail}) => {
@@ -33,13 +34,15 @@ const SugarCube = ({openModal, user, loggedEmail}) => {
             transformedName = splitName[0];
         }
     }
-
+    
     let disabledSugar = false;
+    let doneIcon = null;
     if(user.sugarCubes.length > 0) {
 
         user.sugarCubes.forEach(element => {
             if(element.email == loggedEmail) {
                 disabledSugar = true;
+                doneIcon = <Ionicons name="ios-checkmark" size={28} color="green" style={{fontWeight: 'bold'}}/>
             }
         });
     }
@@ -60,7 +63,11 @@ const SugarCube = ({openModal, user, loggedEmail}) => {
             <View style={[styles.imageBorder, {borderColor: letterColor}]}>
                 {imageObj}
             </View>
+            <View style={styles.done}>
+                 {doneIcon}
+            </View>
             <Text style={styles.lc}>{user.lc}</Text>
+            
             <Text style={styles.ime}>{transformedName}</Text>
         </TouchableOpacity>
 
@@ -102,6 +109,10 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         textTransform: 'capitalize',
         fontStyle: 'italic'
+    },
+    done: {
+        position: 'absolute',
+        left: 100
     },
     imageBorder: {
         borderWidth: 2,

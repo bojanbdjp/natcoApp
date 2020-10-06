@@ -14,7 +14,7 @@ const BigPartner = ({image, openModal}) => {
 const styles = StyleSheet.create({
     container: {
         borderWidth: 2,
-        borderColor: 'gold',
+        borderColor: '#0056d8',
         height: 150,
         justifyContent: 'center',
         backgroundColor: '#fff'

@@ -22,10 +22,12 @@ const EvaluationModal = ({modalVisible,  closeModal, enableButton, session, save
         closeModal();
     }
 
-    let saveButton = <Button buttonStyle={styles.submit}
-                            title="Oceni sesn" disabled={buttonDisabled}
-                            onPress={() => saveRate({rateSession, rateFaci, comment, name: session.name})}
-                        />;
+    let saveButton = <TouchableOpacity style={styles.submit} disabled={buttonDisabled}
+                        onPress={() => saveRate({rateSession, rateFaci, comment, name: session.name})}>
+                        <Text style={styles.submitText}>Oceni sešn</Text>
+                    </TouchableOpacity>;
+
+                        
 
     if(loading) {
         saveButton = <ActivityIndicator size="large" color="#F15946" />  
@@ -79,7 +81,7 @@ const EvaluationModal = ({modalVisible,  closeModal, enableButton, session, save
                     autoCorrect={false}
                     inputStyle={styles.inputStype}
                     inputContainerStyle={{borderBottomWidth:0, padding: 0}}
-                    placeholderTextColor='#E01A4F'
+                    placeholderTextColor='#0056d8'
                 />
                 {saveButton}
                 {buttonDisabled ? <Text style={styles.success}>Uspešno si ocenio sešn</Text> : null}
@@ -101,21 +103,20 @@ const styles = StyleSheet.create({
         height: 200,
         
     }, 
-    partnerText: {
-        paddingVertical: 10,
-        paddingHorizontal: 20,
+    submit: {
+        backgroundColor:'#0056d8',
+        borderRadius: 15,
+        marginHorizontal: 5,
+        marginVertical: 10,
+        padding: 10,
+        display: 'flex',
+        alignItems: 'center',
+      }, 
+      submitText:{
         fontWeight: 'bold',
-        fontSize: 20,
-        alignSelf: 'center'
-    }, 
-    partnerView: {
-        marginTop: 10,
-        width: '90%',
-        textAlign: 'center',
-    },
-    descriptionView: {
-        marginTop: 20
-    },
+        fontSize: 17,
+        color: '#fff'
+      },
     modalContainer: {
         flex: 1,
         margin: 12,
@@ -133,10 +134,6 @@ const styles = StyleSheet.create({
         borderWidth: 3,
         margin: 10,
 
-    },
-    description: {
-        fontSize: 18,
-        textAlign: 'center',
     },
     close: {
         alignSelf: 'flex-end',
@@ -163,13 +160,13 @@ const styles = StyleSheet.create({
     inputStype:{
         flex: 1,
         borderWidth: 1,
-        borderColor: '#E01A4F',
+        borderColor: '#0056d8',
         borderRadius: 15,
         backgroundColor: '#fff',
         marginHorizontal: 0,
         marginTop: 10,
         paddingLeft: 10,
-        color: '#E01A4F',
+        color: '#0056d8',
         height: 100
 
       }, 

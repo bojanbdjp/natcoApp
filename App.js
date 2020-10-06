@@ -46,17 +46,17 @@ function AdminStack() {
         <AdminFlow.Screen name="AdminHome" component={AdminHomeScreen}
           options={{
             tabBarLabel: 'Home',
-            tabBarIcon: () => <Feather name="home" size={24} color="black" />,
+            tabBarIcon: () => <Feather name="home" size={24} color="#F15946" />,
           }}/>
         <AdminFlow.Screen name="Evaluacije" component={EvaAdmin} 
           options={{
             tabBarLabel: 'Evaluacije',
-            tabBarIcon: () => <FontAwesome name="wpforms" size={24} color="black" />,
+            tabBarIcon: () => <FontAwesome name="wpforms" size={24} color="#F15946" />,
           }}/>
         <AdminFlow.Screen name="Prijave" component={AdminLCPage} 
         options={{
           tabBarLabel: 'Prijave',
-          tabBarIcon: () => <FontAwesome5 name="users" size={24} color="black" />,
+          tabBarIcon: () => <FontAwesome5 name="users" size={24} color="#F15946" />,
         }}/>
       </AdminFlow.Navigator>
   );

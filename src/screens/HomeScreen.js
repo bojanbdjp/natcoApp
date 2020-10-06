@@ -42,9 +42,7 @@ const HomeScreen = () => {
     const getApplications = async () => {
         try {
             let result = await server.get(`${URL}/getApplications`)
-            console.log("ovo je ruzultat: ", result.data.applications);
             result = result.data.applications;
-            console.log("ovo je singif: " , result);
 
             let count = result.nis + result.singi + result.ef + result.fon + result.ns + result.kg + result.sub + result.met;
             let pieDataArray = []
@@ -54,9 +52,9 @@ const HomeScreen = () => {
             result.fon   > 0 ? pieDataArray.push({ y: result.fon, x: 'FON'}) : null;
             result.ns    > 0 ? pieDataArray.push({ y: result.ns,  x: 'NS'}) : null;
             result.kg    > 0 ? pieDataArray.push({ y: result.kg,  x: 'KG'}) : null;
-            result.sub   > 0 ? pieDataArray.push({ y: result.su,  x: 'SU'}) : null;
+            result.sub   > 0 ? pieDataArray.push({ y: result.sub,  x: 'SU'}) : null;
             result.met   > 0 ? pieDataArray.push({ y: result.met, x: 'MET'}) : null;
-            
+
             setPieData(pieDataArray);
             setAppCount(count);
         } catch (err){
@@ -66,10 +64,10 @@ const HomeScreen = () => {
 
     
     const today = new Date();
-    const lastDay = new Date(2020, 9, 25, 0, 0, 0 ,0);
+    const lastDay = new Date(2020, 9, 28, 0, 0, 0 ,0);
     const rest =  Math.abs((lastDay.getTime() - today.getTime()) / 1000);
     
-    const graphicColor= ['blue', 'red', '#1E90FF', '#32CD32', '#FFD700', 'orange', '#FF1493', 'brown', 'green'];
+    const graphicColor= ['blue', 'red', '#1E90FF', '#32CD32', '#FFD700', 'orange', '#FF1493', 'pink'];
 
         let pie = (
             <Svg width={350} height={260} style={styles.svg}>
@@ -80,9 +78,9 @@ const HomeScreen = () => {
                     data={pieData}
                     width={350}
                     height={300}
-                    innerRadius={50}
+                    
                     colorScale={graphicColor}
-                    padAngle={1}
+                    
                 
                 style={{
                     labels: {

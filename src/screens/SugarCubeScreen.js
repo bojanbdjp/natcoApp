@@ -1,29 +1,28 @@
 import React, {useState, useEffect, useContext} from 'react';
-import { View, StyleSheet, FlatList, ScrollView} from 'react-native';
+import { View, StyleSheet, FlatList, ScrollView, LogBox} from 'react-native';
 import { Text, Input, Button, Image} from "react-native-elements";
 import { useFocusEffect} from '@react-navigation/native';
 import { FontAwesome } from '@expo/vector-icons';
-import Construction from '../components/Construction';
-import Spacer from '../components/Spacer'
-import MusicRow from '../components/MusicRow'
-import { Ionicons } from '@expo/vector-icons';
+
 import { Context as SugarContext} from '../context/SugarCubesContext'
-import { Context as AuthContext} from '../context/AuthContext'
 import { HomeTitleContext } from '../context/HeaderContext'
 import SugarCube from '../components/SugarCube'
 
 import AddSugarModal from '../components/AddSugarModal'
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import AsyncStorage from '@react-native-community/async-storage';
 
-const MusicScreen = () => {
+const SugarCubeScreen = () => {
     const [emailUser, setEmailUser] = useState("");
     const [modalVisible, setModalVisible] = useState(false);
-    const [userObj, setUserObj] = useState("");
+    const [userObj, setUserObj] = useState();
+    const [loggedUser, setLoggedUser] = useState();
 
     const { setTitle } = useContext(HomeTitleContext);
-    const {state, searchDelegates, addNewSugarCube} = useContext(SugarContext);
+    const {state, searchDelegates, addNewSugarCube, enableButton} = useContext(SugarContext);
 
-    useEffect(() => {
+    useEffect(  () => {
+        getLoggedEmail();
       }, []);
 
     const openModal = (user) => {
@@ -31,11 +30,16 @@ const MusicScreen = () => {
         setModalVisible(!modalVisible);
     }
 
-    useFocusEffect(() => {
+    const getLoggedEmail = async () => {
+        const email = await AsyncStorage.getItem('email');
+        setLoggedUser(email);
+    }
+
+    useFocusEffect( () => {
         setTitle('Sugar Cubes');
+        
     });
 
-    console.log("ajde da te vuid: ", state.delegates);
     let sortedDelegates = null;
     if(state.delegates) {
          sortedDelegates = state.delegates.users.sort(function (a, b) {
@@ -48,11 +52,9 @@ const MusicScreen = () => {
             return +user.track != 4;
         })
 
-        sortedDelegates = filteredDelegates.map(user => {
-            return <SugarCube key={user._id}
-                                openModal={() => openModal(user)}
-                                user={user}/>
-        })
+        sortedDelegates = filteredDelegates.map(user => <SugarCube key={user._id}
+                                openModal={() => openModal(user)} loggedEmail={loggedUser}
+                                user={user}/>)
     }
 
     return (
@@ -61,11 +63,11 @@ const MusicScreen = () => {
         <AddSugarModal 
             user={userObj}
             modalVisible={modalVisible}
-            closeModal={() => setModalVisible(!modalVisible)}
+            closeModal={() => { setModalVisible(!modalVisible); searchDelegates("")}}
             addNewSugarCube={addNewSugarCube}
-            buttonDisabled={state.rateAnswer}
-            loading={state.loading}
-            enableButton={{}}/>
+            loading={state.loading} 
+            buttonDisabled={state.successMessage}
+            enableButton={enableButton}/>
 
 
             <View style={styles.container}>
@@ -78,10 +80,10 @@ const MusicScreen = () => {
                         autoCorrect={false}
                         inputStyle={styles.inputStype}
                         containerStyle={styles.inputContainer}
-                        placeholderTextColor='#fff'
+                        placeholderTextColor='#0056d8'
                     />
                     <TouchableOpacity onPress={() => searchDelegates({name: emailUser})}>
-                        <FontAwesome name="search" size={30} color="black" style={styles.addIcon}/>
+                        <FontAwesome name="search" size={30} color="#0056d8" style={styles.addIcon}/>
                     </TouchableOpacity>
                    
                 </View>
@@ -106,10 +108,12 @@ const styles = StyleSheet.create({
     },
     inputStype:{
         borderRadius: 5,
-        backgroundColor: '#53B3CB',
+        backgroundColor: '#fff',
+        borderColor: '#0056d8',
+        borderWidth: 1,
         marginHorizontal: 0,
         paddingLeft: 10,
-        color: '#fff',
+        color: '#0056d8',
         marginBottom: -5
     }, 
     inputContainer: {
@@ -130,4 +134,4 @@ const styles = StyleSheet.create({
     }
 });
 
-export default MusicScreen;
+export default SugarCubeScreen;

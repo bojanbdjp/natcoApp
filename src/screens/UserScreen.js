@@ -55,7 +55,6 @@ const UserScreen = ({navigation}) => {
           quality: 1,
         });
         setDisplayChoosenImage('flex');
-        console.log("ovo je rezulat: ", result);
     
         if (!result.cancelled) {
           setImage(result.uri);
@@ -96,6 +95,8 @@ const UserScreen = ({navigation}) => {
     let imageActions;
     let imageObj;
     let sugarCubes;
+    let lcName = null;
+    let track = null;
     if(state.errorMessage) {
       loader =  <Text style={styles.errorMessage}>{state.errorMessage}</Text>
     }
@@ -121,81 +122,74 @@ const UserScreen = ({navigation}) => {
             imageObj = <Image source={userImageHolder} style={styles.image}/>
         }
 
-        console.log("sigari: ", state.user.sugarCubes);
         if(state.user.sugarCubes.length > 0) {
             sugarCubes = state.user.sugarCubes.map(sug => {
-                return <Text key={sug._id}>{sug.message}</Text>
+                return <Text key={sug._id}>-{sug.message}</Text>
             })
         }
-    }
+    
+        
+        switch (state.track) {
+            case '1':
+                track = 'TM track'
+                break;
+            case '2':
+                track = 'TL track'
+                break;
+            case '3':
+                track = 'EB track'
+                break;
+            case '4':
+                track = 'Administrator'
+                break;
+            default:
+                track = 'Nepoznato'
+        }
 
+        
+        switch (state.lc) {
+            case 'sin':
+                lcName = 'LC Singidunum'; break;
+            case 'eko':
+                lcName = 'LC EF'; break;
+            case 'fon':
+                lcName = 'LC FON'; break;
+            case 'nis':
+                lcName = 'LC Nis'; break;
+            case 'kag':
+                lcName = 'LC KG'; break;
+            case 'met':
+                lcName = 'LC MET'; break;
+            case 'nsa':
+                lcName = 'LC NS'; break;
+            case 'sub':
+                lcName = 'LC Subotica'; break;
+            default:
+                track = 'Nepoznato'
+        }
 
-
-
-    let track = null;
-    switch (state.track) {
-        case '1':
-            track = 'TM track'
-            break;
-        case '2':
-            track = 'TL track'
-            break;
-        case '3':
-            track = 'EB track'
-            break;
-        case '4':
-            track = 'Administrator'
-            break;
-        default:
-            track = 'Nepoznato'
-    }
-
-    let lcName = null;
-    switch (state.lc) {
-        case 'sin':
-            lcName = 'LC Singidunum'; break;
-        case 'eko':
-            lcName = 'LC EF'; break;
-        case 'fon':
-            lcName = 'LC FON'; break;
-        case 'nis':
-            lcName = 'LC Nis'; break;
-        case 'kag':
-            lcName = 'LC KG'; break;
-        case 'met':
-            lcName = 'LC MET'; break;
-        case 'nsa':
-            lcName = 'LC NS'; break;
-        case 'sub':
-            lcName = 'LC Subotica'; break;
-        default:
-            track = 'Nepoznato'
-    }
-
-   
+}
 
     return <ScrollView style={styles.container}>
         <View style={styles.imageView}>
                 <View style={styles.imageBorder}>
                     {imageObj}
                 </View>
-               
-                <AntDesign name="logout" size={24} color="black"
+                
+                <AntDesign name="logout" size={26} color="#0056d8"
                 style={styles.logout} onPress={signout}/>
 
-            </View>
+        </View>
+        <View style={styles.borderBottom}><View style={styles.borderBottomInner}></View></View>   
 
-        <View style={{ alignItems: 'center', justifyContent: 'center' , flexDirection: 'row'}}>
+        <View style={{paddingTop: 10, alignItems: 'center', justifyContent: 'center' , backgroundColor: '#F9C22E', flexDirection: 'row'}}>
             {imageActions}
         </View>
 
-        <View style={{ alignItems: 'center', justifyContent: 'center', marginBottom: 20}}>
+        <View style={{ alignItems: 'center', justifyContent: 'center', backgroundColor: '#F9C22E', paddingBottom: 10}}>
             {loader}
             {image &&  <Image source={{ uri: image }} style={{ width: 150, height: 150, display: displayChoosenImage }} />}
         </View>
-
-            
-
 
         
         <View style={styles.partition}>
@@ -203,6 +197,8 @@ const UserScreen = ({navigation}) => {
             <Text style={styles.basicInfo}>{lcName}</Text>
             <Text style={styles.basicInfo}>{track}</Text>
         </View>
+
+        <View style={styles.borderBottom}><View style={styles.borderBottomInner}></View></View>
         
         <View style={styles.partition2}>
             <Text style={styles.partitionHeader}>Evaluacije:</Text>
@@ -213,8 +209,9 @@ const UserScreen = ({navigation}) => {
             <Text style={styles.evaluationText}>Dan 5: 0%</Text>
         </View>
 
+        <View style={styles.borderBottom}><View style={styles.borderBottomInner}></View></View>
 
-        <View style={styles.partition2}>
+        <View style={styles.partition3}>
         <Text style={styles.partitionHeader}>Sugar cubes:</Text>
             {sugarCubes}
         </View>
@@ -227,12 +224,12 @@ const UserScreen = ({navigation}) => {
 const styles = StyleSheet.create({
     imageView: {
         height: 250,
-        backgroundColor: '#53B3CB',
+        backgroundColor: '#F9C22E',
         justifyContent: 'center'
     },
     imageBorder: {
         borderWidth: 2,
-        borderColor: '#F15946',
+        borderColor: 'black',
         borderRadius: 100,
         width: 200,
         height: 200,
@@ -253,13 +250,19 @@ const styles = StyleSheet.create({
     },
     partition: {
         alignItems: 'center',
-        backgroundColor: '#f5e9dc',
-        marginBottom: 10
+        backgroundColor: '#F9C22E',
+        paddingBottom: 10
     },
     partition2: {
-        backgroundColor: '#f5e9dc',
-        marginBottom: 10,
-        paddingLeft: 10,
+        backgroundColor: '#F9C22E',
+        paddingLeft: 20,
+        paddingVertical: 5,
+    },
+    partition3: {
+        backgroundColor: '#F9C22E',
+        paddingLeft: 20,
+        paddingBottom: 50,
+        paddingTop: 5
     },
     basicInfo: {
         fontSize: 20,
@@ -282,13 +285,14 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
     },
     pickImage: {
-        borderColor: 'blue',
+        borderColor: '#0056d8',
         borderWidth: 1,
         padding: 5,
-        color: 'blue',
+        color: '#0056d8',
         fontWeight: 'bold',
         marginRight: 10,
-        marginVertical: 10
+        marginVertical: 10,
+        fontSize: 18
     },
     addImage: {
         borderColor: 'green',
@@ -297,7 +301,8 @@ const styles = StyleSheet.create({
         color: 'green',
         fontWeight: 'bold',
         marginRight: 10,
-        marginVertical: 10
+        marginVertical: 10,
+        fontSize: 18
     },
     deleteImage: {
         borderColor: 'red',
@@ -305,19 +310,30 @@ const styles = StyleSheet.create({
         padding: 5,
         color: 'red',
         fontWeight: 'bold',
-        marginVertical: 10
+        marginVertical: 10,
+        fontSize: 18
     },
     errorMessage: {
         fontSize: 20,
         fontWeight: 'bold',
         color: 'red',
-        marginBottom: 10
+        paddingBottom: 10
     },
     successMessage: {
         fontSize: 20,
         fontWeight: 'bold',
         color: 'green',
-        marginBottom: 10
+        paddingBottom: 10
+    },
+    borderBottom:{
+        backgroundColor: '#F9C22E',
+    },
+    borderBottomInner:{
+        height: 1,
+        width: '90%',
+        borderBottomWidth: 1,
+        borderColor: '#000',
+        alignSelf: 'center',
     }
 });
 

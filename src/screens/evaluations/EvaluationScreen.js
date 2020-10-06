@@ -24,7 +24,6 @@ const EvaluationScreenCommon = () => {
     });
 
     useEffect(() => {
-        console.log("Sessions" , state.sessions);
     }, [state.sessions]);
 
     const openModal = (ses) => {
