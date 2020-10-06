@@ -4,6 +4,7 @@ import { AntDesign } from '@expo/vector-icons';
 import { useFocusEffect } from '@react-navigation/native';
 import { Input, Button } from "react-native-elements";
 
+
 const AddSugarModal = ({modalVisible,  closeModal, enableButton, userObj, addNewSugarCube, buttonDisabled, loading}) => {
     const [comment, setComment] = useState();
 
@@ -13,9 +14,11 @@ const AddSugarModal = ({modalVisible,  closeModal, enableButton, userObj, addNew
         closeModal();
     }
 
+
+
     let saveButton = <Button buttonStyle={styles.submit}
-                            title="Oceni sesn" disabled={buttonDisabled}
-                            onPress={() => addNewSugarCube({rateSession, rateFaci, comment, name: session.name})}
+                            title="Pošalji" disabled={buttonDisabled}
+                            onPress={() => addNewSugarCube({message: comment, userEmail: userObj.email})}
                         />;
 
     if(loading) {
@@ -32,7 +35,7 @@ const AddSugarModal = ({modalVisible,  closeModal, enableButton, userObj, addNew
                 >
                 <View style={styles.modalContainer}>
                 
-                <Text style={styles.sesName}>{userObj.name}</Text>
+                <Text style={styles.sesName}>{userObj}</Text>
 
                 <Text style={styles.label}>Komentar:</Text>
                 <Input 
@@ -49,7 +52,7 @@ const AddSugarModal = ({modalVisible,  closeModal, enableButton, userObj, addNew
                 />
                 {saveButton}
                 {buttonDisabled ? <Text style={styles.success}>Uspešno si ocenio sešn</Text> : null}
-                <TouchableOpacity onPress={() => closeModalLocal()} style={styles.close}>
+                <TouchableOpacity onPress={closeModalLocal} style={styles.close}>
                         <Text><AntDesign name="closecircleo" size={24} color="black" /></Text>
                 </TouchableOpacity>
                 </View>

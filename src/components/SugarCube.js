@@ -1,32 +1,26 @@
 import React, {useEffect, useState} from 'react';
-import {View, StyleSheet, TouchableOpacity} from 'react-native';
+import {View, StyleSheet, TouchableOpacity, Image} from 'react-native';
 import {Badge, Text } from 'react-native-elements'
-import { FontAwesome } from '@expo/vector-icons';
-import { MaterialIcons } from '@expo/vector-icons';
-import { AntDesign } from '@expo/vector-icons';
-import { Fontisto } from '@expo/vector-icons';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
-import AsyncStorage from '@react-native-community/async-storage'
 
+import userImageHolder from '../../assets/aiesecer.png'
 const SugarCube = ({openModal, user, loggedEmail}) => {
 
 
-    let letterColor;
-    switch (user.track) {
-        case '1':
-            letterColor = 'blue'
-            break;
-        case '2':
-            letterColor = 'green'
-            break;
-        case '3':
-            letterColor = 'red'
-            break;
-        case 'SVI':
-            personlisedBadge = <Badge value="SVI" status="warning" containerStyle={{padding: 5}} badgeStyle={{padding: 2}}/>
-            break;
-        default:
-            break;
+    let letterColor = 'red';
+    if(user) {
+        switch (user.track) {
+            case '1':
+                letterColor = 'blue'
+                break;
+            case '2':
+                letterColor = 'green'
+                break;
+            case '3':
+                letterColor = 'red'
+                break;
+            default:
+                break;
+        }
     }
 
     let transformedName = null;
@@ -49,17 +43,26 @@ const SugarCube = ({openModal, user, loggedEmail}) => {
             }
         });
     }
+    let imageObj;
+    if(user) {
+        if(user.imageUrl != '' && user.imageUrl != undefined) {
+            imageObj = <Image source={{uri: user.imageUrl}} style={styles.image}/>
+        } else {
+            imageObj = <Image source={userImageHolder} style={styles.image}/>
+        }
+    }
     
 
     return <View style={styles.container}>
         
         <TouchableOpacity onPress={openModal} disabled={disabledSugar}>
         
+            <View style={[styles.imageBorder, {borderColor: letterColor}]}>
+                {imageObj}
+            </View>
+            <Text style={styles.lc}>{user.lc}</Text>
+            <Text style={styles.ime}>{transformedName}</Text>
         </TouchableOpacity>
-       <MaterialCommunityIcons  name={disabledSugar ? "email-check-outline" : "email-outline"}
-            size={110} color={letterColor} style={styles.icon} />
-        <Text style={styles.lc}>{user.lc}</Text>
-        <Text style={styles.ime}>{transformedName}</Text>
 
         {/*<View style={styles.textView}>
             <View style={styles.nameView}>{personlisedBadge}<Text style={styles.text}>  {session.name}</Text></View>
@@ -72,7 +75,7 @@ const styles = StyleSheet.create({
     container: {
         width: 120,
         padding: 0,
-        
+        marginBottom: 50
 
     },
     icon: {
@@ -85,20 +88,37 @@ const styles = StyleSheet.create({
     },
     ime: {
         position: 'absolute',
-        top: 60,
-        left: 26,
-        width: 40,
-        fontSize: 9,
+        top: 100,
+        color: '#000',
+        fontSize: 12,
         textTransform: 'capitalize',
-        fontWeight: 'bold'
+        fontWeight: 'bold',
+        alignSelf: 'center'
     },
     lc: {
         position: 'absolute',
-        top: 30,
-        left: 52,
         fontSize: 10,
+        left: 8,
+        fontWeight: 'bold',
         textTransform: 'capitalize',
         fontStyle: 'italic'
+    },
+    imageBorder: {
+        borderWidth: 2,
+        borderRadius: 50,
+        width: 100,  
+        height: 100,
+        alignSelf: 'center',
+        overflow: 'hidden',
+        
+    },
+    image: {
+        flex: 1,
+        resizeMode: 'contain',
+        alignSelf: 'center',
+        width: 150,
+        height: 150,
+        
     }
 })
    

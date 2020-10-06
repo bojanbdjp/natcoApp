@@ -1,7 +1,10 @@
 import axios from 'axios';
 
 export default axios.create({
-    baseURL: 'http://f9dc071a79e6.ngrok.io' 
+    baseURL: 'http://507f1311382d.ngrok.io' 
 })
 
-export const URL = 'http://f9dc071a79e6.ngrok.io';
+export const URL = 'http://507f1311382d.ngrok.io';
+
+
+export const IMGBB_API_KEY = 'a3a9f45cf424d862d32867dc1e9fae32';

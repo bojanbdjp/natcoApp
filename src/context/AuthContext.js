@@ -18,8 +18,18 @@ const authReducer = (state, action) => {
             loading: false}
         case 'clear_error_message': 
             return {...state, errorMessage: ''}
+        case 'add_image': 
+            return {...state, 
+                errorMessage: '',
+                successMessage: action.payload.successMessage,
+                user: action.payload.user,
+                loading: false}
+        case 'clear_success_message': 
+            return {...state, successMessage: ''}
         case 'signout': 
-        return {errorMessage: '' , token: null, email: '', track: ''}
+            return {errorMessage: '' , token: null, email: '', track: ''}
+        case 'get_one_user': 
+            return {...state, user: action.payload.user, loading: false}
         default:
             return state;
     }
@@ -84,6 +94,50 @@ const signin = (dispatch) => async ({email, password, track, lc}) => {
     }
 }
 
+const addUserImage = (dispatch) => async ({imageUrl}) => {
+    dispatch({type: 'loading'})
+    try {
+        const email = await AsyncStorage.getItem('email');
+        const response = await trackerApi.post('/addUserImage', {imageUrl, email});
+        dispatch({type: 'add_image', payload: response.data})
+
+    } catch (err) {
+        dispatch({type: 'add_error', payload: err.response.data.message})
+    }
+}
+
+const deleteUserImage = (dispatch) => async () => {
+    dispatch({type: 'loading'})
+    try {
+        const email = await AsyncStorage.getItem('email');
+        const response = await trackerApi.post('/deleteUserImage', {email});
+
+        dispatch({type: 'add_image', payload: response.data})
+
+    } catch (err) {
+        dispatch({type: 'add_error', payload: err.response.data.message})
+    }
+}
+
+const clearSusscessMessage = (dispatch) => async () => {
+    dispatch({type: 'clear_success_message'})
+
+}
+
+
+const getOneUser = (dispatch) => async () => {
+    dispatch({type: 'loading'})
+    try {
+        const email = await AsyncStorage.getItem('email');
+        const response = await trackerApi.post('/getOneUser', {email});
+        dispatch({type: 'get_one_user', payload: response.data})
+
+    } catch (err) {
+        dispatch({type: 'add_error', payload: err.response.data.message})
+    }
+}
+
+
 const signout = dispatch => async () => {
     await AsyncStorage.removeItem('token');
     await AsyncStorage.removeItem('email');
@@ -94,8 +148,12 @@ const signout = dispatch => async () => {
 }
 
 
+
 export const {Provider, Context} = createDataContext(
     authReducer,
-    {signin, signup, signout, clearErrorMessage, tryLocalSignin},
-    {token: null, errorMessage: '', track: '', lc: '' , email: '', loading: false}
+    {signin, signup, signout, 
+     clearErrorMessage, tryLocalSignin,
+     addUserImage, getOneUser, deleteUserImage,
+     clearSusscessMessage},
+    {token: null, errorMessage: '', successMessage: '', track: '', lc: '' , email: '', user: '', loading: false}
 )

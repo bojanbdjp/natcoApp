@@ -5,8 +5,9 @@ import { useFocusEffect } from '@react-navigation/native';
 
 
 import { HomeTitleContext } from '../../context/HeaderContext'
+import { ScrollView } from 'react-native-gesture-handler';
 
-const PartnerOverview = ({modalVisible, modalImage, modalText, modalPartner, closeModal, partnerStyle}) => {
+const PartnerOverview = ({modalVisible, modalImage, modalText, modalTextSecond, closeModal, partnerStyle}) => {
     const { setTitle } = useContext(HomeTitleContext);
 
     useFocusEffect(() => {
@@ -21,23 +22,21 @@ const PartnerOverview = ({modalVisible, modalImage, modalText, modalPartner, clo
                 visible={modalVisible}
                 onRequestClose={() => {}}
             >
-                <View style={[styles.modalContainer, {"borderColor": partnerStyle}]}>
+                <ScrollView style={styles.modalContainer}>
                     <View>
-                    <Image source={modalImage} style={styles.imageStyle}/>
-                    </View>
-
-                    <View style={[styles.partnerView, {"backgroundColor": partnerStyle}]}>
-                        <Text style={styles.partnerText}>{modalPartner}</Text>
+                        <Image source={modalImage} style={styles.imageStyle}/>
                     </View>
 
                     <View style={styles.descriptionView}>
                         <Text style={styles.description}>{modalText}</Text>
+
+                        <Text style={styles.descriptionSec}>{modalTextSecond}</Text>
                     </View>
 
                     <TouchableOpacity onPress={closeModal} style={styles.close}>
                         <Text><AntDesign name="closecircleo" size={24} color="black" /></Text>
                     </TouchableOpacity>
-                </View>
+                </ScrollView>
             </Modal>
     </View>
 }
@@ -48,8 +47,9 @@ const styles = StyleSheet.create({
     },
     imageStyle: {
         resizeMode: 'contain',
-        width:  200,
-        height: 200,
+        width: '90%',
+        height: 120,
+        alignSelf: 'center'
         
     }, 
     partnerText: {
@@ -65,7 +65,7 @@ const styles = StyleSheet.create({
         textAlign: 'center',
     },
     descriptionView: {
-        marginTop: 20
+        marginTop: 20,
     },
     modalContainer: {
         flex: 1,
@@ -73,7 +73,6 @@ const styles = StyleSheet.create({
         backgroundColor: "white",
         borderRadius: 20,
         padding: 25,
-        alignItems: "center",
         shadowColor: "#000",
         shadowOffset: {
             width: 0,
@@ -87,12 +86,18 @@ const styles = StyleSheet.create({
 
     },
     description: {
-        fontSize: 18,
+        fontSize: 14,
+        textAlign: 'center',
+        marginBottom: 15
+    },
+    descriptionSec: {
+        fontSize: 13,
         textAlign: 'center',
     },
     close: {
         alignSelf: 'flex-end',
         marginTop: 40,
+        marginBottom: 50,
         backgroundColor: "#F15946",
         borderRadius: 25,
         padding: 10,

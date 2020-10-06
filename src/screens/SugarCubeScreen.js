@@ -1,7 +1,8 @@
 import React, {useState, useEffect, useContext} from 'react';
 import { View, StyleSheet, FlatList, ScrollView} from 'react-native';
 import { Text, Input, Button, Image} from "react-native-elements";
-import { useFocusEffect } from '@react-navigation/native';
+import { useFocusEffect} from '@react-navigation/native';
+import { FontAwesome } from '@expo/vector-icons';
 import Construction from '../components/Construction';
 import Spacer from '../components/Spacer'
 import MusicRow from '../components/MusicRow'
@@ -12,10 +13,10 @@ import { HomeTitleContext } from '../context/HeaderContext'
 import SugarCube from '../components/SugarCube'
 
 import AddSugarModal from '../components/AddSugarModal'
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 const MusicScreen = () => {
     const [emailUser, setEmailUser] = useState("");
-    const [loggedUserEmail, setLoggedUserEmail] = useState("");
     const [modalVisible, setModalVisible] = useState(false);
     const [userObj, setUserObj] = useState("");
 
@@ -23,7 +24,6 @@ const MusicScreen = () => {
     const {state, searchDelegates, addNewSugarCube} = useContext(SugarContext);
 
     useEffect(() => {
-        findLoggedUserEmail();
       }, []);
 
     const openModal = (user) => {
@@ -31,21 +31,11 @@ const MusicScreen = () => {
         setModalVisible(!modalVisible);
     }
 
-    const findLoggedUserEmail = async () => {
-        try {
-            let emaill =  await AsyncStorage.getItem('email');
-            setLoggedUserEmail(emaill);
-        } catch(err) {
-            console.log("doslo je do greske: ", err);
-        }
-        
-       
-    }  
     useFocusEffect(() => {
         setTitle('Sugar Cubes');
     });
 
-    console.log("ajde da te vuid: ", state.delegates.users);
+    console.log("ajde da te vuid: ", state.delegates);
     let sortedDelegates = null;
     if(state.delegates) {
          sortedDelegates = state.delegates.users.sort(function (a, b) {
@@ -61,8 +51,7 @@ const MusicScreen = () => {
         sortedDelegates = filteredDelegates.map(user => {
             return <SugarCube key={user._id}
                                 openModal={() => openModal(user)}
-                                user={user}
-                                loggedEmail={loggedUserEmail}/>
+                                user={user}/>
         })
     }
 
@@ -76,13 +65,13 @@ const MusicScreen = () => {
             addNewSugarCube={addNewSugarCube}
             buttonDisabled={state.rateAnswer}
             loading={state.loading}
-            enableButton={enableButton}/>
+            enableButton={{}}/>
 
 
             <View style={styles.container}>
                 <View style={styles.addSongContainer}>
                     <Input 
-                        placeholder="Ime i Prezime" 
+                        placeholder="Ime i prezime" 
                         value={emailUser}
                         onChangeText={setEmailUser}
                         autoCapitalize="none"
@@ -91,8 +80,10 @@ const MusicScreen = () => {
                         containerStyle={styles.inputContainer}
                         placeholderTextColor='#fff'
                     />
-                    <Ionicons style={styles.addIcon} name="ios-add-circle-outline" size={34} color="black" 
-                        onPress={() => searchDelegates({name: emailUser})}/>
+                    <TouchableOpacity onPress={() => searchDelegates({name: emailUser})}>
+                        <FontAwesome name="search" size={30} color="black" style={styles.addIcon}/>
+                    </TouchableOpacity>
+                   
                 </View>
 
                 <View style={styles.users}>
@@ -127,13 +118,14 @@ const styles = StyleSheet.create({
         
     },
     addIcon: {
-        width: '20%',
         paddingTop: 4,
         paddingLeft: 7,
     }, 
     users: {
         flexDirection: 'row',
         flexWrap: 'wrap',
+        display: 'flex',
+        justifyContent: 'space-around'
         
     }
 });
