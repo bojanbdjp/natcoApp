@@ -124,7 +124,6 @@ const clearSusscessMessage = (dispatch) => async () => {
 
 
 const getOneUser = (dispatch) => async () => {
-    console.log("usao u get one user");
     dispatch({type: 'loading'})
     try {
         const email = await AsyncStorage.getItem('email');
