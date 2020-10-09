@@ -15,6 +15,7 @@ const authReducer = (state, action) => {
             email: action.payload.email,
             track: action.payload.track,
             lc: action.payload.lc,
+            isAdmin: action.payload.isAdmin,
             loading: false}
         case 'clear_error_message': 
             return {...state, errorMessage: ''}
@@ -46,6 +47,7 @@ const tryLocalSignin = dispatch => async () => {
                 email: response.data.emailFromDB,
                 track: response.data.track,
                 lc: response.data.lc,
+                isAdmin: response.data.isAdmin,
                 token: token
             }
             dispatch({type: 'signin', payload: signInData})
@@ -90,11 +92,11 @@ const signin = (dispatch) => async ({email, password, track, lc}) => {
     }
 }
 
-const addUserImage = (dispatch) => async ({imageUrl}) => {
+const addUserImage = (dispatch) => async ({imageUrl, imagesAdded}) => {
     dispatch({type: 'loading'})
     try {
         const email = await AsyncStorage.getItem('email');
-        const response = await trackerApi.post('/addUserImage', {imageUrl, email});
+        const response = await trackerApi.post('/addUserImage', {imageUrl, email, imagesAdded});
         dispatch({type: 'add_image', payload: response.data})
 
     } catch (err) {
@@ -122,6 +124,7 @@ const clearSusscessMessage = (dispatch) => async () => {
 
 
 const getOneUser = (dispatch) => async () => {
+    console.log("usao u get one user");
     dispatch({type: 'loading'})
     try {
         const email = await AsyncStorage.getItem('email');
@@ -151,5 +154,5 @@ export const {Provider, Context} = createDataContext(
      clearErrorMessage, tryLocalSignin,
      addUserImage, getOneUser, deleteUserImage,
      clearSusscessMessage},
-    {token: null, errorMessage: '', successMessage: '', track: '', lc: '' , email: '', user: '', loading: false}
+    {token: null, errorMessage: '', successMessage: '', track: '', lc: '', isAdmin: false, email: '', user: '', loading: false}
 )

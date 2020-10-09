@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useContext} from 'react';
-import { View, StyleSheet, FlatList, ScrollView} from 'react-native';
+import { View, StyleSheet, FlatList, ScrollView, ActivityIndicator} from 'react-native';
 import { Text, Input, Button, Image} from "react-native-elements";
 import { useFocusEffect } from '@react-navigation/native';
 import Construction from '../components/Construction';
@@ -10,19 +10,28 @@ import { Context as MusicContext} from '../context/MusicContext'
 import { Context as AuthContext} from '../context/AuthContext'
 import { HomeTitleContext } from '../context/HeaderContext'
 
-const MusicScreen = () => {
+const MusicScreen = ({navigation}) => {
     const [song, setSong] = useState("");
     const {getSongs, state, addNewSong, addVote} = useContext(MusicContext);
     const {state: authstate} = useContext(AuthContext);
     const { setTitle } = useContext(HomeTitleContext);
 
     useEffect(() => {
-        getSongs();
+        const unsubscribe = navigation.addListener('focus', () => {
+            getSongs();
+        });
+        return unsubscribe; 
       }, []);
 
     useFocusEffect(() => {
         setTitle('Muzika');
     });
+
+    let loader = null;
+    
+    if(state.loading) {
+        loader = <ActivityIndicator size="large" color="#F15946" />  
+    }
 
     const sortedSongs = state.songs.sort(function (a, b) {
         return b.voters.length - a.voters.length}) 
@@ -44,6 +53,7 @@ const MusicScreen = () => {
                     <Ionicons style={styles.addIcon} name="ios-add-circle-outline" size={34} color="#0056d8" 
                         onPress={() => addNewSong({name: song})}/>
                 </View>
+                {loader}
 
                 <View>
                     {sortedSongs.map(song => {

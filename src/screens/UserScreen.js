@@ -3,7 +3,6 @@ import { View, StyleSheet, Text, Image, ImageBackground, TouchableOpacity, Butto
 import { useFocusEffect, useBlurEffect } from '@react-navigation/native';
 import { AntDesign } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
-import Constants from 'expo-constants';
 
 
 import userImageHolder from '../../assets/user.png';
@@ -27,8 +26,8 @@ const UserScreen = ({navigation}) => {
 
 
     useEffect(() => {
-        getOneUser();
-        (async () => {
+        //
+        (async () => {  
           if (Platform.OS !== 'web') {
             const { status } = await ImagePicker.requestCameraRollPermissionsAsync();
             if (status !== 'granted') {
@@ -37,6 +36,11 @@ const UserScreen = ({navigation}) => {
           }
         })();
 
+
+        const unsubscribe = navigation.addListener('focus', () => {
+            getOneUser();
+        });
+        return unsubscribe; 
       }, []);
 
       useEffect(() => {
@@ -83,7 +87,7 @@ const UserScreen = ({navigation}) => {
                   },
              });
             const body = await response.json();
-            addUserImage({imageUrl: body.data.image.url});
+            addUserImage({imageUrl: body.data.image.url, imagesAdded: state.user.imagesAdded});
             setDisplayChoosenImage('none');
         } catch(err) {
             console.log("Ovo je error", err);  
@@ -110,6 +114,11 @@ const UserScreen = ({navigation}) => {
     }
 
     if(state.user) {
+        if (state.user.imagesAdded > 2) {
+            imageActions = <Text>Iskoristio/la si 3 prava da promeniš sliku!</Text>
+            imageObj = <Image source={{uri: state.user.imageUrl}} style={styles.image}/>
+        } else {
+        
         if(state.user.imageUrl != '' && state.user.imageUrl != undefined) {
             imageActions = <TouchableOpacity onPress={deleteUserImage} ><Text style={styles.deleteImage}>Izbriši sliku</Text></TouchableOpacity>
             imageObj = <Image source={{uri: state.user.imageUrl}} style={styles.image}/>
@@ -121,6 +130,9 @@ const UserScreen = ({navigation}) => {
             )
             imageObj = <Image source={userImageHolder} style={styles.image}/>
         }
+    }
+
+
 
         if(state.user.sugarCubes.length > 0) {
             sugarCubes = state.user.sugarCubes.map(sug => {
@@ -129,14 +141,14 @@ const UserScreen = ({navigation}) => {
         }
     
         
-        switch (state.track) {
-            case '1':
+        switch (state.user.track) {
+            case '0':
                 track = 'TM track'
                 break;
-            case '2':
+            case '1':
                 track = 'TL track'
                 break;
-            case '3':
+            case '2':
                 track = 'EB track'
                 break;
             case '4':
@@ -147,7 +159,7 @@ const UserScreen = ({navigation}) => {
         }
 
         
-        switch (state.lc) {
+        switch (state.user.lc) {
             case 'sin':
                 lcName = 'LC Singidunum'; break;
             case 'eko':

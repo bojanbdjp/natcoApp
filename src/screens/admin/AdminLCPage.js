@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext} from 'react';
-import { View, StyleSheet, ScrollView} from 'react-native';
+import { View, StyleSheet, ScrollView, ActivityIndicator} from 'react-native';
 import { Button, Image, Text} from "react-native-elements";
 import { useFocusEffect } from '@react-navigation/native';
 
@@ -11,6 +11,7 @@ import server, {URL} from '../../api/server'
 import AuthForm from '../../components/ChooseTrack';
 
 const AdminLCPage = () => {
+    const [loading, setLoading] = useState(false);
     const [singi, setSingi] = useState();
     const [ef, setEf] = useState("");
     const [fon, setFon] = useState("");
@@ -51,12 +52,19 @@ const AdminLCPage = () => {
 
     const updateApplications = async () => {
         try {
+            setLoading(true);
             let result = await server.post(`${URL}/updateApplications`, 
             {singi: +singi, ef: +ef, fon: +fon, met: +met, nis: +nis, kg: +kg, ns: +ns, sub: +sub})
-    
+            setLoading(false);
         } catch (err){
             console.log("ovo je greska ", err);
         }
+    }
+
+    let loader = null;
+    
+    if(loading) {
+        loader = <ActivityIndicator size="large" color="#F15946" />  
     }
 
     return (
@@ -132,7 +140,7 @@ const AdminLCPage = () => {
                 </View>
                
 
-
+                {loader}
                
 
                 <Button buttonStyle={styles.submit}

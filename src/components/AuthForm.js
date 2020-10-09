@@ -144,6 +144,7 @@ const AuthForm = ({ headerText, errorMessage, onSubmit, submitButtonText, isSign
                   buttonWrapStyle={{marginLeft: 10}}
                 />
                 <RadioButtonLabel
+                  onPress={() => console.log("testets")}
                   obj={obj}
                   index={i}
                   labelHorizontal={true}

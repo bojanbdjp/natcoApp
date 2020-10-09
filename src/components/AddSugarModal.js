@@ -5,13 +5,14 @@ import { useFocusEffect } from '@react-navigation/native';
 import { Input, Button } from "react-native-elements";
 
 
-const AddSugarModal = ({modalVisible,  closeModal, user, addNewSugarCube, enableButton, loading, buttonDisabled}) => {
+const AddSugarModal = ({modalVisible,  closeModal, user, addNewSugarCube, enableButton, loading, buttonDisabled, triggerSearch}) => {
     const [comment, setComment] = useState();
 
 
     const closeModalLocal = () => {
         enableButton();
         closeModal();
+        triggerSearch();
     }
 
 

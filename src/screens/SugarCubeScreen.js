@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useContext} from 'react';
-import { View, StyleSheet, FlatList, ScrollView, LogBox} from 'react-native';
+import { View, StyleSheet, FlatList, ScrollView, ActivityIndicator} from 'react-native';
 import { Text, Input, Button, Image} from "react-native-elements";
 import { useFocusEffect} from '@react-navigation/native';
 import { FontAwesome } from '@expo/vector-icons';
@@ -48,14 +48,20 @@ const SugarCubeScreen = () => {
             return 0;
         })
         
-        const filteredDelegates = sortedDelegates.filter(user => {
+        /*const filteredDelegates = sortedDelegates.filter(user => {
             return +user.track != 4;
-        })
+        })*/
 
-        sortedDelegates = filteredDelegates.map(user => <SugarCube key={user._id}
+        sortedDelegates = sortedDelegates.map(user => <SugarCube key={user._id}
                                 openModal={() => openModal(user)} loggedEmail={loggedUser}
                                 user={user}/>)
     }
+
+    let loader = null;
+    
+    if(state.loading) {
+        loader = <ActivityIndicator size="large" color="#F15946" />  
+      }
 
     return (
         <ScrollView>
@@ -67,7 +73,8 @@ const SugarCubeScreen = () => {
             addNewSugarCube={addNewSugarCube}
             loading={state.loading} 
             buttonDisabled={state.successMessage}
-            enableButton={enableButton}/>
+            enableButton={enableButton}
+            triggerSearch={() => searchDelegates({name: 'aie'})}/>
 
 
             <View style={styles.container}>
@@ -87,6 +94,8 @@ const SugarCubeScreen = () => {
                     </TouchableOpacity>
                    
                 </View>
+
+                {loader}
 
                 <View style={styles.users}>
                    {sortedDelegates}

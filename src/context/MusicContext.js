@@ -6,7 +6,9 @@ import {navigate} from '../../RootNavigation';
 const musicReducer = (state, action) => {
     switch (action.type) {
         case 'get_songs': 
-            return {...state, songs: action.payload.songs}
+            return {...state, songs: action.payload.songs, loading: false}
+        case 'loading': 
+            return {...state, loading: true}
         case 'add_vote':
             return {...state, songs: state.songs.map(song => {
                 if(song.name === action.payload.song.name){
@@ -15,7 +17,7 @@ const musicReducer = (state, action) => {
                 return song;
             })}
         case 'add_song':
-            return {...state, songs: state.songs.concat(action.payload)}
+            return {...state, songs: state.songs.concat(action.payload), loading: false}
         case 'add_error': 
             return {...state, errorMessage: action.payload}
         default:
@@ -37,6 +39,7 @@ const addVote = dispatch => async ({name}) => {
 
 
 const addNewSong = dispatch => async ({name}) => {
+    dispatch({type: 'loading'})
     try {
         const response = await trackerApi.post('/newSong', {name});
         dispatch({type: 'add_song', payload: response.data})
@@ -48,6 +51,7 @@ const addNewSong = dispatch => async ({name}) => {
 }
 
 const getSongs = dispatch => async () => {
+    dispatch({type: 'loading'})
     try {
         const response = await trackerApi.get('/songs');
         dispatch({type: 'get_songs', payload: response.data})
@@ -61,5 +65,5 @@ const getSongs = dispatch => async () => {
 export const {Provider, Context} = createDataContext(
     musicReducer,
     {getSongs, addNewSong, addVote},
-    {songs: [], errorMessage: ''}
+    {songs: [], errorMessage: '', loading: false}
 )

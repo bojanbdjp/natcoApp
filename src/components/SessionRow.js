@@ -5,23 +5,29 @@ import { FontAwesome } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
 import { FontAwesome5 } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-community/async-storage'
+import { isLoading } from 'expo-font';
 
-const SessionRow = ({session, openModal}) => {
+const SessionRow = ({session, openModal, user}) => {
     const[email, setEmail] = useState();
 
     let personlisedBadge;
+    let sessionTrackNum;
     switch (session.track) {
         case 'TM':
             personlisedBadge = <Badge value="TM" status="success" containerStyle={{padding: 5}} badgeStyle={{padding: 2}}/>
+            sessionTrackNum = 0;
             break;
         case 'TL':
             personlisedBadge = <Badge value="TL" status="primary" containerStyle={{padding: 5}} badgeStyle={{padding: 2}}/>
+            sessionTrackNum = 1;
             break;
         case 'EB':
             personlisedBadge = <Badge value="EB" status="error" containerStyle={{padding: 5}} badgeStyle={{padding: 2}}/>
+            sessionTrackNum = 2;
             break;
         case 'SVI':
             personlisedBadge = <Badge value="SVI" status="warning" containerStyle={{padding: 5}} badgeStyle={{padding: 2}}/>
+            sessionTrackNum = 3;
             break;
         default:
             break;
@@ -34,14 +40,18 @@ const SessionRow = ({session, openModal}) => {
     useEffect(() => {
         testFunction()
     }, [])
-    
 
     let icon = null;
     let delegates = session.delegates.filter(del => {
-
         return del.email == email;
     })
-    if(delegates.length > 0) {
+
+    const today = new Date();
+    const lastDay = new Date(2020, 9, 28, 0, 0, 0 ,0);
+    
+    if(lastDay-today > 0 || sessionTrackNum != user.track) {
+        icon = <FontAwesome name="lock" size={24} color="gold" />
+    } else if(delegates.length > 0) {
         icon = <MaterialIcons name="done" size={24}  color="green" />
     } else {
         icon = <TouchableOpacity onPress={openModal}>

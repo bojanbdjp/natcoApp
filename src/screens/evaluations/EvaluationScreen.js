@@ -7,14 +7,16 @@ import EvaluationCommon from './EvaluationCommon'
 import SessionRow from '../../components/SessionRow'
 import { HomeTitleContext } from '../../context/HeaderContext'
 import { Context as SessionContext} from '../../context/SessionContext'
+import { Context as AuthContext} from '../../context/AuthContext'
 
 
-const EvaluationScreenCommon = () => {
+const EvaluationScreenCommon = ({navigation}) => {
     const [modalVisible, setModalVisible] = useState(false);
     const [day, setDay] = useState();
     const [track, setTrack] = useState();
     const { setTitle } = useContext(HomeTitleContext);
     const { filterSessions, rateSession, enableButton, state } = useContext(SessionContext);
+    const { state:authState, getOneUser} = useContext(AuthContext);
 
     const [sessionObject, setSessionObject] = useState("");
    
@@ -24,7 +26,12 @@ const EvaluationScreenCommon = () => {
     });
 
     useEffect(() => {
-    }, [state.sessions]);
+        const unsubscribe = navigation.addListener('focus', () => {
+            getOneUser();
+        });
+        return unsubscribe; 
+
+    }, []);
 
     const openModal = (ses) => {
         setSessionObject(ses);
@@ -35,7 +42,7 @@ const EvaluationScreenCommon = () => {
       let sessions = null
 
       if(state.sessions != null) {
-        sessions = state.sessions.map(ses => <SessionRow session={ses}
+        sessions = state.sessions.map(ses => <SessionRow session={ses} user={authState.user}
                                                         key={ses.name} 
                                                         openModal={() => openModal(ses)}/>)
       }

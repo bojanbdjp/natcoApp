@@ -1,11 +1,12 @@
 import React, {useEffect, useState} from 'react';
-import {View, StyleSheet, TouchableOpacity, Image} from 'react-native';
+import {View, StyleSheet, TouchableOpacity, Image, ActivityIndicator} from 'react-native';
 import {Badge, Text } from 'react-native-elements'
 import { Ionicons } from '@expo/vector-icons';
 
 import userImageHolder from '../../assets/aiesecer.png'
 const SugarCube = ({openModal, user, loggedEmail}) => {
 
+    const [loadingImage, setLoadingImage] = useState(true);
 
     let letterColor = 'red';
     if(user) {
@@ -19,6 +20,10 @@ const SugarCube = ({openModal, user, loggedEmail}) => {
             case '3':
                 letterColor = 'red'
                 break;
+            case '4':
+                letterColor = '#F9C22E'
+                break;
+
             default:
                 break;
         }
@@ -48,21 +53,34 @@ const SugarCube = ({openModal, user, loggedEmail}) => {
     }
     let imageObj;
     if(user) {
+
+
+
         if(user.imageUrl != '' && user.imageUrl != undefined) {
-            imageObj = <Image source={{uri: user.imageUrl}} style={styles.image}/>
-        } else {
-            imageObj = <Image source={userImageHolder} style={styles.image}/>
+            imageObj = (
+                        <View style={[styles.imageBorder, {borderColor: letterColor}]}>
+                            <Image source={{uri: user.imageUrl}} style={styles.image}
+                                        onLoadEnd={() =>  setLoadingImage(false)}/>
+
+                                    <ActivityIndicator style={styles.loader}
+                                    animating={loadingImage} size="large" color="#F15946"/>
+                        </View>
+                     )
+        }  else {
+            imageObj = <View style={[styles.imageBorder, {borderColor: letterColor}]}>
+            <Image source={userImageHolder} style={styles.image}/></View>
         }
     }
+
     
 
     return <View style={styles.container}>
         
         <TouchableOpacity onPress={openModal} disabled={disabledSugar}>
         
-            <View style={[styles.imageBorder, {borderColor: letterColor}]}>
+            
                 {imageObj}
-            </View>
+
             <View style={styles.done}>
                  {doneIcon}
             </View>
@@ -130,6 +148,10 @@ const styles = StyleSheet.create({
         width: 150,
         height: 150,
         
+    }, loader:{
+        position: 'absolute',
+        top: '30%',
+        left: '30%'
     }
 })
    

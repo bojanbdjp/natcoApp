@@ -14,7 +14,7 @@ import BorderDevider from '../components/BorderDevider';
 import notification from '../components/NotificationFunction'
 import server, {URL} from '../../src/api/server'
 
-const HomeScreen = () => {
+const HomeScreen = ({navigation}) => {
     const [pieData, setPieData] = useState([{ y: 10, x: 'Nis'},
                                             { y: 90, x: 'Singi'},
                                             { y: 50, x: 'EF'},
@@ -36,7 +36,11 @@ const HomeScreen = () => {
 
     useEffect(() => {
         notification();
-        getApplications();
+    
+        const unsubscribe = navigation.addListener('focus', () => {
+            getApplications();
+        });
+        return unsubscribe; 
     }, [])
 
     const getApplications = async () => {
