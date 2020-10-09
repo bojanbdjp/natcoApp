@@ -210,22 +210,12 @@ const UserScreen = ({navigation}) => {
             <Text style={styles.basicInfo}>{track}</Text>
         </View>
 
-        <View style={styles.borderBottom}><View style={styles.borderBottomInner}></View></View>
-        
-        <View style={styles.partition2}>
-            <Text style={styles.partitionHeader}>Evaluacije:</Text>
-            <Text style={styles.evaluationText}>Dan 1: 50%</Text>
-            <Text style={styles.evaluationText}>Dan 2: 20%</Text>
-            <Text style={styles.evaluationText}>Dan 3: 0%</Text>
-            <Text style={styles.evaluationText}>Dan 4: 0%</Text>
-            <Text style={styles.evaluationText}>Dan 5: 0%</Text>
-        </View>
 
         <View style={styles.borderBottom}><View style={styles.borderBottomInner}></View></View>
 
         <View style={styles.partition3}>
-        <Text style={styles.partitionHeader}>Sugar cubes:</Text>
-            {sugarCubes}
+            <Text style={styles.partitionHeader}>Sugar cubes:</Text>
+                {sugarCubes}
         </View>
 
         
@@ -234,6 +224,10 @@ const UserScreen = ({navigation}) => {
 }
 
 const styles = StyleSheet.create({
+    container:{
+        height: '100%',
+        backgroundColor: '#F9C22E',
+    },
     imageView: {
         height: 250,
         backgroundColor: '#F9C22E',

@@ -42,22 +42,22 @@ const getSessions = dispatch => async () => {
         dispatch({type: 'get_sessions', payload: response.data})
 
     } catch (err) {
-        dispatch({type: 'add_error', payload: 'Something went wrong we cant get sessions'})
+        dispatch({type: 'add_error', payload: 'Došlo je do greške'})
     }
 }
 
-const rateSession = dispatch => async ({rateSession, rateFaci, comment, name}) => {
+const rateSession = dispatch => async ({rateSession, comment, name}) => {
     dispatch({type: 'loading'})
     try {
         const email = await AsyncStorage.getItem('email');
-        const response = await trackerApi.post('/rateSession', {name, email,rateFaci, rateSession, comment});
+        const response = await trackerApi.post('/rateSession', {name, email, rateSession, comment});
         dispatch({type: 'rate_session', payload: response.data})
 
-        const resSessions = await trackerApi.get('/sessions');
+        const resSessions = await trackerApi.post('/sessionsFilter', {day: 1, track: 'Common'}); 
         dispatch({type: 'get_sessions', payload: resSessions.data})
 
     } catch (err) {
-        dispatch({type: 'add_error', payload: 'Something went wrong we cant rate sessions'})
+        dispatch({type: 'add_error', payload: err.response.data.message})
     }
 }
 

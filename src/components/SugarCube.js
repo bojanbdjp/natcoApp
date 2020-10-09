@@ -11,13 +11,13 @@ const SugarCube = ({openModal, user, loggedEmail}) => {
     let letterColor = 'red';
     if(user) {
         switch (user.track) {
+            case '0':
+                letterColor = 'green'
+                break;
             case '1':
                 letterColor = 'blue'
                 break;
             case '2':
-                letterColor = 'green'
-                break;
-            case '3':
                 letterColor = 'red'
                 break;
             case '4':

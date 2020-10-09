@@ -7,7 +7,8 @@ import { Input, Button } from "react-native-elements";
 import { HomeTitleContext } from '../context/HeaderContext'
 import CustomPicker from '../components/UI/Picker'
 
-const EvaluationModal = ({modalVisible,  closeModal, enableButton, session, saveRate, buttonDisabled, loading}) => {
+const EvaluationModal = ({modalVisible,  closeModal, enableButton, session,
+     saveRate, buttonDisabled, loading, error}) => {
     const [rateSession, setRateSession] = useState();
     const [rateFaci, setRateFaci] = useState();
     const [comment, setComment] = useState();
@@ -23,11 +24,15 @@ const EvaluationModal = ({modalVisible,  closeModal, enableButton, session, save
     }
 
     let saveButton = <TouchableOpacity style={styles.submit} disabled={buttonDisabled}
-                        onPress={() => saveRate({rateSession, rateFaci, comment, name: session.name})}>
+                        onPress={() => saveRate({rateSession, comment, name: session.name})}>
                         <Text style={styles.submitText}>Oceni sešn</Text>
                     </TouchableOpacity>;
 
-                        
+    let errorMessage = null;
+    if(error) {
+        console.log("ovovo je greska: ", error);
+        errorMessage = <Text style={styles.error}>{error}</Text>
+    }               
 
     if(loading) {
         saveButton = <ActivityIndicator size="large" color="#F15946" />  
@@ -58,17 +63,7 @@ const EvaluationModal = ({modalVisible,  closeModal, enableButton, session, save
                         { label: '5', value: '5', key: 'ocena5' },
                 ]}/> 
 
-                <Text style={styles.label}>Faci:</Text>
-                <CustomPicker 
-                    onChange={setRateFaci }
-                    label="Ocena"
-                    items={[
-                        { label: '1', value: '1', key: 'ocena1'},
-                        { label: '2', value: '2', key: 'ocena2'},
-                        { label: '3', value: '3', key: 'ocena3' },
-                        { label: '4', value: '4', key: 'ocena4' },
-                        { label: '5', value: '5', key: 'ocena5' },
-                ]}/> 
+                
 
                 <Text style={styles.label}>Komentar:</Text>
                 <Input 
@@ -85,6 +80,7 @@ const EvaluationModal = ({modalVisible,  closeModal, enableButton, session, save
                 />
                 {saveButton}
                 {buttonDisabled ? <Text style={styles.success}>Uspešno si ocenio sešn</Text> : null}
+                {errorMessage}
                 <TouchableOpacity onPress={() => closeModalLocal()} style={styles.close}>
                         <Text><AntDesign name="closecircleo" size={24} color="black" /></Text>
                 </TouchableOpacity>
@@ -179,7 +175,12 @@ const styles = StyleSheet.create({
         marginLeft: '5%',
         alignSelf: 'center',
 
-      }
+      },
+      error: {
+        color: 'red',
+        fontSize: 16,
+        alignSelf: 'center'
+    },
 })
 
    

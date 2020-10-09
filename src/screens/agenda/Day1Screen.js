@@ -1,6 +1,8 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import { View, StyleSheet, Text, Image} from 'react-native';
 import { Table, TableWrapper, Row, Rows, Col } from 'react-native-table-component';
+import { HomeTitleContext } from '../../context/HeaderContext'
+import { useFocusEffect } from '@react-navigation/native';
 
 import day1 from '../../../assets/day1.png'
 const Day1Screen = () => {
@@ -21,6 +23,12 @@ const Day1Screen = () => {
         ['TM Track opening', '2', 'EB Track opening'],
         ['Break'],
         ['EVENING PLENARY']];
+
+        const { setTitle } = useContext(HomeTitleContext);
+        useFocusEffect(() => {
+            setTitle('Agenda');
+        });
+
 
     return <View style={styles.container}>
        <Image source={day1} style={styles.image}/>

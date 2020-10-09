@@ -60,7 +60,8 @@ const EvaluationScreenCommon = ({navigation}) => {
         saveRate={rateSession}
         buttonDisabled={state.rateAnswer}
         loading={state.loading}
-        enableButton={enableButton}/>
+        enableButton={enableButton}
+        error={state.errorMessage}/>
 
     <View style={styles.container}>
         

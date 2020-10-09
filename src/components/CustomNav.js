@@ -17,6 +17,7 @@ import Day2Screen from '../screens/agenda/Day2Screen'
 import Day3Screen from '../screens/agenda/Day3Screen'
 import Day4Screen from '../screens/agenda/Day4Screen'
 import Day5Screen from '../screens/agenda/Day5Screen'
+import InfoScreen from '../screens/InfoScreen';
 import {Context as AuthContext} from '../context/AuthContext'
 
 
@@ -70,6 +71,7 @@ const CustomNav = ({adminStack}) => {
             <Drawer.Screen name="Agenda" component={AgendaStack} options={{drawerLabel: 'Agenda'}}/>
             <Drawer.Screen name="User" component={UserScreen} options={{ drawerLabel: 'Nalog' }}/>
             <Drawer.Screen name="Sugar Cubes" component={SugarCubeScreen} options={{ drawerLabel: 'Sugar cubes'}}/>
+            <Drawer.Screen name="Info" component={InfoScreen} options={{ drawerLabel: 'Uputstva'}}/>
             {state.isAdmin 
             ?  <Drawer.Screen name="Admin" component={adminStack} 
                 options={{
