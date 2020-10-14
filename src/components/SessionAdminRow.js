@@ -27,7 +27,17 @@ const SessionRow = ({session, openModal}) => {
             break;
     }
 
-    const delegatesNumber = session.delegates.length;
+    let delegatesNumber;
+    if(session.isDaily) {
+        if(session.dailyComment){
+        delegatesNumber = session.dailyComment.length;
+        } else {
+            delegatesNumber = 0;
+        }
+    } else {
+        delegatesNumber = session.delegates.length;
+    }
+    
 
     return <View style={styles.container}>
         

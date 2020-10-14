@@ -17,40 +17,71 @@ const EvaluationAdminModal = ({modalVisible,  closeModal, enableButton, session,
         closeModal();
     }
 
-    let saveButton = <Button buttonStyle={styles.submit}
-                            title="Oceni sesn" disabled={buttonDisabled}
-                            onPress={() => saveRate({rateSession, rateFaci, comment, name: session.name})}
-                        />;
-
-    if(loading) {
-        saveButton = <ActivityIndicator size="large" color="#F15946" />  
-    }
     let sessionsArray = null;
     let brojDelegata = 0;
     let ukupnaOcena = 0;
     let prosecnaOcena = 0;
+    let basicSessionView = null;
     
+    if(session) {
+        if(session.isDaily && session.dailyComment.length > 0) {
 
+            session.dailyComment.sort(function (a, b) {
+                if(a.lc < b.lc) { return -1; }
+                if(a.lc > b.lc) { return 1; }
+                return 0;
+            });
 
-    if(session.delegates) {
+            session.dailyComment.forEach(com => {
+                brojDelegata++;
+            });
 
+            sessionsArray = session.dailyComment.map(del =>
+                <View key={del._id} style={styles.borderBot}>
+                    <Text style={styles.lcHead}>{del.lc}</Text>
+                    <Text>Faci: {del.mark.faci}</Text>
+                    <Text>OC: {del.mark.oc}</Text>
+                    <Text>Chair: {del.mark.chair}</Text>
+                    <Text>Generalni: {del.mark.general}</Text>
+                </View>
+            )
+
+        } else if (session.delegates) {
         
-    session.delegates.sort(function (a, b) {
-        if(a.lc < b.lc) { return -1; }
-        if(a.lc > b.lc) { return 1; }
-        return 0;
-    })
-        
+            session.delegates.sort(function (a, b) {
+                if(a.lc < b.lc) { return -1; }
+                if(a.lc > b.lc) { return 1; }
+                return 0;
+            })
+                
+            sessionsArray = session.delegates.map(del => <Text key={del._id}>{del.lc} - {del.mark.comment}</Text>)
 
-        sessionsArray = session.delegates.map(del => <Text key={del._id}>{del.lc} - {del.mark.comment}</Text>)
+            session.delegates.forEach(com => {
+                brojDelegata++;
+                ukupnaOcena = ukupnaOcena + +com.mark.session;
+            });
 
-        session.delegates.forEach(com => {
-            brojDelegata++;
-            ukupnaOcena = ukupnaOcena + +com.mark.session;
-        });
+            prosecnaOcena = ukupnaOcena/brojDelegata;
+
+
+            basicSessionView = (
+                <View>
+                    <Text style={styles.heading}> Prosečna ocena: {prosecnaOcena}</Text>
+
+                    <Rating
+                        startingValue={prosecnaOcena}
+                        type='heart'
+                        ratingCount={5}
+                        imageSize={40}
+                        isDisabled={true}
+                        style={styles.stars}
+                        />
+                </View>
+            )
+        }
     }
 
-    prosecnaOcena = ukupnaOcena/brojDelegata
+   
 
 
     return <View style={styles.container}>
@@ -64,17 +95,8 @@ const EvaluationAdminModal = ({modalVisible,  closeModal, enableButton, session,
                <ScrollView style={styles.modalContainer}>
                 <Text style={styles.sesName}>{session.name}</Text>
                 <Text style={styles.heading}> Broj evaluacija: {brojDelegata}</Text>
-                <Text style={styles.heading}> Prosečna ocena: {prosecnaOcena}</Text>
-
-                <Rating
-                    startingValue={prosecnaOcena}
-                    type='heart'
-                    ratingCount={5}
-                    imageSize={40}
-                    isDisabled={true}
-                    style={styles.stars}
-                    />
-                
+               
+                {basicSessionView}
                 {sessionsArray}
 
                 <TouchableOpacity onPress={() => closeModalLocal()} style={styles.close}>
@@ -129,6 +151,16 @@ const styles = StyleSheet.create({
         fontSize: 19,
         alignSelf: 'center',
         marginBottom: 10
+    },
+    lcHead: {
+        fontWeight: 'bold',
+        fontSize: 18,
+        textTransform: 'capitalize'
+    },
+    borderBot: {
+        paddingBottom: 10,
+        borderBottomColor: 'black',
+        borderBottomWidth: 1
     }
 
 })

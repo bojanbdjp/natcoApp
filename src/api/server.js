@@ -1,9 +1,11 @@
 import axios from 'axios';
 
 export default axios.create({
+      // baseURL: 'http://8a13e77176d6.ngrok.io'
      baseURL: 'https://natco-app.herokuapp.com'
 })
 
+  // export const URL = 'http://8a13e77176d6.ngrok.io';
  export const URL = 'https://natco-app.herokuapp.com';
 
 

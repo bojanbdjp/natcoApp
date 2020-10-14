@@ -28,10 +28,18 @@ const MusicScreen = ({navigation}) => {
     });
 
     let loader = null;
+
     
+
     if(state.loading) {
-        loader = <ActivityIndicator size="large" color="#F15946" />  
+        loader = <ActivityIndicator size="large" color="#F15946" />     
     }
+
+    if(state.errorMessage) {
+        loader = <Text style={styles.errorMessage}>{state.errorMessage}</Text>
+    }
+
+     
 
     const sortedSongs = state.songs.sort(function (a, b) {
         return b.voters.length - a.voters.length}) 
@@ -41,7 +49,7 @@ const MusicScreen = ({navigation}) => {
             <View style={styles.container}>
                 <View style={styles.addSongContainer}>
                     <Input 
-                        placeholder="Pesma" 
+                        placeholder="Unesi naziv pesme" 
                         value={song}
                         onChangeText={setSong}
                         autoCapitalize="none"
@@ -99,11 +107,14 @@ const styles = StyleSheet.create({
         width: '20%',
         paddingTop: 4,
         paddingLeft: 7,
-        
-        
-        
-        
-    }
+    },
+    errorMessage: {
+        fontSize: 16,
+        fontWeight: 'bold',
+        color: 'red',
+        paddingBottom: 15,
+        paddingLeft: 10,
+    },
 });
 
 export default MusicScreen;

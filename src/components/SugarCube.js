@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {View, StyleSheet, TouchableOpacity, Image, ActivityIndicator} from 'react-native';
 import {Badge, Text } from 'react-native-elements'
 import { Ionicons } from '@expo/vector-icons';
+import { MaterialIcons } from '@expo/vector-icons';
 
 import userImageHolder from '../../assets/aiesecer.png'
 const SugarCube = ({openModal, user, loggedEmail}) => {
@@ -47,7 +48,7 @@ const SugarCube = ({openModal, user, loggedEmail}) => {
         user.sugarCubes.forEach(element => {
             if(element.email == loggedEmail) {
                 disabledSugar = true;
-                doneIcon = <Ionicons name="ios-checkmark" size={28} color="green" style={{fontWeight: 'bold'}}/>
+                doneIcon = <MaterialIcons name="done" size={18} color="black" style={styles.doneIcon}/>
             }
         });
     }
@@ -152,6 +153,13 @@ const styles = StyleSheet.create({
         position: 'absolute',
         top: '30%',
         left: '30%'
+    },
+    doneIcon: {
+        backgroundColor: 'green',
+        color: '#fff',
+        overflow: 'hidden',
+        borderRadius: 10,
+        
     }
 })
    

@@ -61,6 +61,23 @@ const rateSession = dispatch => async ({rateSession, comment, name}) => {
     }
 }
 
+
+const rateDailySession = dispatch => async ({dailyFaci, dailyOc ,dailyChair,dailyGeneral, name}) => {
+    dispatch({type: 'loading'})
+    try {
+        const email = await AsyncStorage.getItem('email');
+        const response = await trackerApi.post('/rateDailySession', {name, email,
+            faci: dailyFaci, oc: dailyOc , chair: dailyChair, general: dailyGeneral});
+        dispatch({type: 'rate_session', payload: response.data})
+
+        const resSessions = await trackerApi.post('/sessionsFilter', {day: 1, track: 'Common'}); 
+        dispatch({type: 'get_sessions', payload: resSessions.data})
+
+    } catch (err) {
+        dispatch({type: 'add_error', payload: err.response.data.message})
+    }
+}
+
 const enableButton = dispatch => async () => {
     dispatch({type: 'enable_button'})
 }
@@ -68,6 +85,6 @@ const enableButton = dispatch => async () => {
 
 export const {Provider, Context} = createDataContext(
     sessionReducer,
-    {getSessions, filterSessions, rateSession, enableButton},
+    {getSessions, filterSessions, rateSession, enableButton, rateDailySession},
     {sessions: [], errorMessage: '', loading: false, rateAnswer: false }
 )

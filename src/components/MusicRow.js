@@ -1,6 +1,7 @@
 import React from 'react';
 import {View, StyleSheet, Text, TouchableOpacity, Animated, Dimensions, Easing} from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
+import { FontAwesome } from '@expo/vector-icons';
 import BorderBottom from './BorderBottom';
 
 const {height} = Dimensions.get('window');
@@ -63,8 +64,10 @@ class MusicRow extends React.Component {
 
                 <TouchableOpacity onPress={this.addHeart} style={styles.icon} 
                     disabled={currVoter}>
-                    <AntDesign name="heart" size={24} color={currVoter ? '#D1D1D1' : "#E01A4F" }
-                          />
+                    {currVoter 
+                    ? <AntDesign name="heart" size={24} color='#E01A4F' />
+                    : <AntDesign name="hearto" size={24} color='black' />}
+                    
                 </TouchableOpacity>
                 
                 <View>

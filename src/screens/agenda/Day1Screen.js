@@ -4,7 +4,7 @@ import { Table, TableWrapper, Row, Rows, Col } from 'react-native-table-componen
 import { HomeTitleContext } from '../../context/HeaderContext'
 import { useFocusEffect } from '@react-navigation/native';
 
-import day1 from '../../../assets/day1.png'
+import day1 from '../../../assets/construction2.png'
 const Day1Screen = () => {
   const tableHead= ['', 'Day 1 - Essence'];
   const tableTitle= ['10:00-10:15', '10:15-10:30', '10:30-10:45', '10:45-11:00',

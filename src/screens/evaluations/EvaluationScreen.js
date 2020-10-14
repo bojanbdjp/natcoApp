@@ -15,7 +15,7 @@ const EvaluationScreenCommon = ({navigation}) => {
     const [day, setDay] = useState();
     const [track, setTrack] = useState();
     const { setTitle } = useContext(HomeTitleContext);
-    const { filterSessions, rateSession, enableButton, state } = useContext(SessionContext);
+    const { filterSessions, rateSession, rateDailySession, enableButton, state } = useContext(SessionContext);
     const { state:authState, getOneUser} = useContext(AuthContext);
 
     const [sessionObject, setSessionObject] = useState("");
@@ -61,7 +61,8 @@ const EvaluationScreenCommon = ({navigation}) => {
         buttonDisabled={state.rateAnswer}
         loading={state.loading}
         enableButton={enableButton}
-        error={state.errorMessage}/>
+        error={state.errorMessage}
+        saveDaily={rateDailySession}/>
 
     <View style={styles.container}>
         

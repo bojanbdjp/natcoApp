@@ -25,7 +25,7 @@ const SessionRow = ({session, openModal, user}) => {
             personlisedBadge = <Badge value="EB" status="error" containerStyle={{padding: 5}} badgeStyle={{padding: 2}}/>
             sessionTrackNum = 2;
             break;
-        case 'SVI':
+        case 'Common':
             personlisedBadge = <Badge value="SVI" status="warning" containerStyle={{padding: 5}} badgeStyle={{padding: 2}}/>
             sessionTrackNum = 3;
             break;
@@ -42,14 +42,23 @@ const SessionRow = ({session, openModal, user}) => {
     }, [])
 
     let icon = null;
-    let delegates = session.delegates.filter(del => {
-        return del.email == email;
-    })
+    let delegates;
+
+    if(session.isDaily) {
+        delegates = session.dailyComment.filter(del => {
+            return del.email == email;
+        });
+    } else {
+        delegates = session.delegates.filter(del => {
+            return del.email == email;
+        })
+    }
 
     const today = new Date();
     const lastDay = new Date(2020, 9, 28, 0, 0, 0 ,0);
-    
-    if(lastDay-today > 0 || sessionTrackNum != user.track) {
+
+
+    if(lastDay - today > 0 || (sessionTrackNum != user.track && sessionTrackNum != 3)) {
         icon = <FontAwesome name="lock" size={24} color="gold" />
     } else if(delegates.length > 0) {
         icon = <MaterialIcons name="done" size={24}  color="green" />

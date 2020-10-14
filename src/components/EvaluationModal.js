@@ -2,21 +2,22 @@ import React, {useEffect, useContext, useState} from 'react';
 import {View, StyleSheet, Text, Image, Modal, TouchableOpacity, ActivityIndicator} from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
 import { useFocusEffect } from '@react-navigation/native';
-import { Input, Button } from "react-native-elements";
+import { Button } from "react-native-elements";
+import Input from '../components/Input'
 
 import { HomeTitleContext } from '../context/HeaderContext'
 import CustomPicker from '../components/UI/Picker'
+import { ScrollView } from 'react-native-gesture-handler';
 
 const EvaluationModal = ({modalVisible,  closeModal, enableButton, session,
-     saveRate, buttonDisabled, loading, error}) => {
+     saveRate, buttonDisabled, loading, error, saveDaily}) => {
     const [rateSession, setRateSession] = useState();
-    const [rateFaci, setRateFaci] = useState();
-    const [comment, setComment] = useState();
-    const { setTitle } = useContext(HomeTitleContext);
+    const [comment, setComment] = useState('');
 
-    useFocusEffect(() => {
-        setTitle('Partneri');
-    });
+    const [dailyFaci, setDailyFaci] = useState('');
+    const [dailyOc, setDailyOc] = useState('');
+    const [dailyChair, setDailyChair] = useState('');
+    const [dailyGeneral, setDailyGeneral] = useState('');
 
     const closeModalLocal = () => {
         enableButton();
@@ -28,14 +29,105 @@ const EvaluationModal = ({modalVisible,  closeModal, enableButton, session,
                         <Text style={styles.submitText}>Oceni sešn</Text>
                     </TouchableOpacity>;
 
+
+    let saveButtonDaily = <TouchableOpacity style={styles.submit} disabled={buttonDisabled}
+                    onPress={() => saveDaily({dailyFaci, dailyOc,dailyChair,dailyGeneral,  name: session.name})}>
+                    <Text style={styles.submitText}>Dodaj komentar</Text>
+                </TouchableOpacity>;
+
     let errorMessage = null;
     if(error) {
-        console.log("ovovo je greska: ", error);
         errorMessage = <Text style={styles.error}>{error}</Text>
     }               
 
     if(loading) {
         saveButton = <ActivityIndicator size="large" color="#F15946" />  
+    }
+
+
+    let modalContent = null;
+
+
+    if(session.isDaily) {
+
+        modalContent = (
+            <ScrollView style={styles.modalContainer}>
+                    <Text style={styles.sesName}>{session.name}</Text>
+
+                    <Text style={styles.label}>Komentar za faci team:</Text>
+                    <Input val={dailyFaci} setVal={setDailyFaci}
+                        style={styles.inputStype}
+                        constyle={{borderBottomWidth:0, padding: 0}}
+                        placeholderTextColor='#0056d8'
+                        isMultiline={true}
+                    />
+
+                    <Text style={styles.label}>Komentar za oc team:</Text>
+                    <Input val={dailyOc} setVal={setDailyOc}
+                        style={styles.inputStype}
+                        constyle={{borderBottomWidth:0, padding: 0}}
+                        placeholderTextColor='#0056d8'
+                        isMultiline={true}
+                    />
+
+                    <Text style={styles.label}>Komentar za chair-a:</Text>
+                    <Input val={dailyChair} setVal={setDailyChair}
+                        style={styles.inputStype}
+                        constyle={{borderBottomWidth:0, padding: 0}}
+                        placeholderTextColor='#0056d8'
+                    />
+
+                    <Text style={styles.label}>Generalni komentar:</Text>
+                    <Input val={dailyGeneral} setVal={setDailyGeneral}
+                        style={styles.inputStype}
+                        constyle={{borderBottomWidth:0, padding: 0}}
+                        placeholderTextColor='#0056d8'
+                    />
+
+                    {saveButtonDaily}
+                    {buttonDisabled ? <Text style={styles.success}>Uspešno si dodao komentar</Text> : null}
+                    {errorMessage}
+                    <TouchableOpacity onPress={() => closeModalLocal()} style={styles.close}>
+                            <Text><AntDesign name="closecircleo" size={24} color="black" /></Text>
+                    </TouchableOpacity>
+                </ScrollView>
+
+        )
+
+    } else {
+        modalContent = (
+            <ScrollView style={styles.modalContainer}>
+                
+                    <Text style={styles.sesName}>{session.name}</Text>
+                    <Text style={styles.sesFaci}>{session.faci}</Text>
+
+                    <Text style={styles.label}>Session:</Text>
+                    <CustomPicker 
+                        onChange={setRateSession}
+                        label="Ocena"
+                        items={[
+                            { label: '1', value: '1', key: 'ocena1'},
+                            { label: '2', value: '2', key: 'ocena2'},
+                            { label: '3', value: '3', key: 'ocena3' },
+                            { label: '4', value: '4', key: 'ocena4' },
+                            { label: '5', value: '5', key: 'ocena5' },
+                    ]}/> 
+
+                    <Text style={styles.label}>Komentar:</Text>
+                    <Input val={comment} setVal={setComment}
+                        style={styles.inputStype}
+                        constyle={{borderBottomWidth:0, padding: 0}}
+                        placeholderTextColor='#0056d8'
+                    />
+
+                    {saveButton}
+                    {buttonDisabled ? <Text style={styles.success}>Uspešno si ocenio sešn</Text> : null}
+                    {errorMessage}
+                    <TouchableOpacity onPress={() => closeModalLocal()} style={styles.close}>
+                            <Text><AntDesign name="closecircleo" size={24} color="black" /></Text>
+                    </TouchableOpacity>
+                </ScrollView>
+        )
     }
 
     return <View style={styles.container}>
@@ -44,49 +136,12 @@ const EvaluationModal = ({modalVisible,  closeModal, enableButton, session,
                 animationType="slide"
                 transparent={true}
                 visible={modalVisible}
-                onRequestClose={() => {}}
-            >
-                <View style={styles.modalContainer}>
+                onRequestClose={() => {}}>
                 
-                <Text style={styles.sesName}>{session.name}</Text>
-                <Text style={styles.sesFaci}>{session.faci}</Text>
+            {modalContent}
 
-                <Text style={styles.label}>Session:</Text>
-                <CustomPicker 
-                    onChange={setRateSession}
-                    label="Ocena"
-                    items={[
-                        { label: '1', value: '1', key: 'ocena1'},
-                        { label: '2', value: '2', key: 'ocena2'},
-                        { label: '3', value: '3', key: 'ocena3' },
-                        { label: '4', value: '4', key: 'ocena4' },
-                        { label: '5', value: '5', key: 'ocena5' },
-                ]}/> 
-
-                
-
-                <Text style={styles.label}>Komentar:</Text>
-                <Input 
-                    multiline = {true}
-                    numberOfLines = {4}
-                    placeholder="" 
-                    value={comment}
-                    onChangeText={setComment}
-                    autoCapitalize="none"
-                    autoCorrect={false}
-                    inputStyle={styles.inputStype}
-                    inputContainerStyle={{borderBottomWidth:0, padding: 0}}
-                    placeholderTextColor='#0056d8'
-                />
-                {saveButton}
-                {buttonDisabled ? <Text style={styles.success}>Uspešno si ocenio sešn</Text> : null}
-                {errorMessage}
-                <TouchableOpacity onPress={() => closeModalLocal()} style={styles.close}>
-                        <Text><AntDesign name="closecircleo" size={24} color="black" /></Text>
-                </TouchableOpacity>
-                </View>
             </Modal>
-    </View>
+        </View>
 }
 
 const styles = StyleSheet.create({
@@ -137,7 +192,8 @@ const styles = StyleSheet.create({
         backgroundColor: "#F15946",
         borderRadius: 25,
         padding: 10,
-        elevation: 2
+        elevation: 2,
+        marginBottom: 50
     },
     sesName: {
         fontSize: 18,

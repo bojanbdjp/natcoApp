@@ -80,7 +80,7 @@ const SugarCubeScreen = () => {
             <View style={styles.container}>
                 <View style={styles.addSongContainer}>
                     <Input 
-                        placeholder="Ime i prezime" 
+                        placeholder="Pretraži po imenu i prezimenu" 
                         value={emailUser}
                         onChangeText={setEmailUser}
                         autoCapitalize="none"

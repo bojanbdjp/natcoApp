@@ -2,8 +2,10 @@ import React from 'react';
 import {View, StyleSheet} from 'react-native';
 import { Input} from "react-native-elements";
 
-const Spacer = ({val, setVal, style, constyle, placeholderTextColor}) => {
-    return  <Input 
+const Spacer = ({val, setVal, style, constyle, placeholderTextColor, isMultiline}) => {
+    return  <Input
+                multiline={isMultiline || false}
+                placeholder="" 
                 value={String(val)}
                 onChangeText={setVal}
                 autoCapitalize="none"

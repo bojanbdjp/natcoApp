@@ -6,7 +6,7 @@ import {navigate} from '../../RootNavigation';
 const musicReducer = (state, action) => {
     switch (action.type) {
         case 'get_songs': 
-            return {...state, songs: action.payload.songs, loading: false}
+            return {...state, songs: action.payload.songs, loading: false, errorMessage: ''}
         case 'loading': 
             return {...state, loading: true}
         case 'add_vote':
@@ -15,9 +15,9 @@ const musicReducer = (state, action) => {
                     song.voters = action.payload.song.voters
                 } 
                 return song;
-            })}
+            }), errorMessage: '', loading: false}
         case 'add_song':
-            return {...state, songs: state.songs.concat(action.payload), loading: false}
+            return {...state, songs: state.songs.concat(action.payload), loading: false, errorMessage: ''}
         case 'add_error': 
             return {...state, errorMessage: action.payload}
         default:
@@ -33,7 +33,7 @@ const addVote = dispatch => async ({name}) => {
         dispatch({type: 'add_vote', payload: response.data})
 
     } catch (err) {
-        dispatch({type: 'add_error', payload: 'Something went wrong we cant sign up'})
+        dispatch({type: 'add_error', payload:  err.response.data.message})
     }
 }
 
@@ -44,9 +44,8 @@ const addNewSong = dispatch => async ({name}) => {
         const response = await trackerApi.post('/newSong', {name});
         dispatch({type: 'add_song', payload: response.data})
         
-
     } catch (err) {
-        dispatch({type: 'add_error', payload: 'Something went wrong we cant sign up'})
+        dispatch({type: 'add_error', payload:  err.response.data.message})
     }
 }
 
@@ -57,7 +56,7 @@ const getSongs = dispatch => async () => {
         dispatch({type: 'get_songs', payload: response.data})
 
     } catch (err) {
-        dispatch({type: 'add_error', payload: 'Something went wrong we cant sign up'})
+        dispatch({type: 'add_error', payload:  err.response.data.message})
     }
 }
 
