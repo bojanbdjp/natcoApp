@@ -1,5 +1,5 @@
 import React, {useContext, useState}  from 'react';
-import { View, StyleSheet, Text, Button} from 'react-native';
+import { View, StyleSheet, Text, Linking} from 'react-native';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import { HomeTitleContext } from '../context/HeaderContext'
 import { useFocusEffect } from '@react-navigation/native';
@@ -67,6 +67,13 @@ const PartnersScreen = ({navigation}) => {
                 <Text style={styles.submitText}>Oceni aplikaciju</Text>
             </TouchableOpacity> 
         </View>
+
+        <View style={styles.appDesigner}>
+            <Text>Razvoj aplikacije: </Text>
+            <TouchableOpacity onPress={() => 
+                Linking.openURL("https://www.linkedin.com/in/bojan-filipovic-ab5326177")}>
+                <Text style={styles.bojan}>Bojan Filipović</Text></TouchableOpacity>
+        </View>
      
             
     </ScrollView>
@@ -115,6 +122,14 @@ const styles = StyleSheet.create({
         fontSize: 17,
         color: '#fff'
       },
+      appDesigner: {
+          flexDirection: 'row',
+          alignSelf: 'center'
+      },
+      bojan: {
+          fontWeight: 'bold',
+          color: '#0056d8'
+      }
 });
 
 export default PartnersScreen;
